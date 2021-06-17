@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Card(
                 shape: RoundedRectangleBorder(
                   side: BorderSide(color: Colors.blue.shade900, width: 1),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(11),
                 ),
                   color: Colors.blue.shade900,
                  child: Column(
