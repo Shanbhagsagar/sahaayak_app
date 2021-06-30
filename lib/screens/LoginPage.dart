@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:sahaayak_app/constants.dart';
+import 'package:sahaayak_app/components/RoundedInputField.dart';
+import 'package:sahaayak_app/components/LinkTextButton.dart';
 
 class LoginPage extends StatefulWidget {
   static const String id = 'login_page';
@@ -50,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                         Text(
                              'Sahaayak',
                              style: TextStyle(
-                                 fontFamily: 'Ruluko',
+                                 fontFamily: kFontFamily1,
                                 color: Colors.white,
                                fontSize: 60,
                              ),
@@ -58,46 +61,18 @@ class _LoginPageState extends State<LoginPage> {
                          SizedBox(
                            height: 25,
                          ),
-                         TextField(
-                           style: TextStyle(color: Colors.white,fontFamily: 'Ruluko'),
-                           decoration: InputDecoration(
-                             border: OutlineInputBorder(
-                               borderRadius: BorderRadius.all(Radius.circular(11.0)),
-                             ),
-                             labelText: 'Email',
-                              labelStyle: TextStyle(
-                                  color: Colors.blueGrey,
-                                 fontFamily: 'Ruluko',
-                                fontWeight: FontWeight.bold,
-                              ),
-                              hoverColor: Colors.white,
-                            ),
-                         ),
+                         RoundedInputField(obscureText: false,labelText: 'Email'),
                          SizedBox(
                            height: 30,
                          ),
-                         TextField(
-                           obscureText: true,
-                           style: TextStyle(color: Colors.white,fontFamily: 'Ruluko'),
-                           decoration: InputDecoration(
-                             border: OutlineInputBorder(
-                               borderRadius: BorderRadius.all(Radius.circular(11.0)),
-                             ),
-                             labelText: 'Password',
-                             labelStyle: TextStyle(
-                               color: Colors.blueGrey,
-                               fontFamily: 'Ruluko',
-                               fontWeight: FontWeight.bold,
-                             ),
-                             hoverColor: Colors.white,
-                           ),
-                         ),
+                         RoundedInputField(obscureText: true,labelText: 'Password'),
                          SizedBox(
                            height: 10,
                          ),
                          Row(
                            children: <Widget>[
                              Checkbox(
+                               hoverColor: null,
                                checkColor: Colors.white,
                                value: isChecked,
                                onChanged: (bool? value) {
@@ -145,30 +120,8 @@ class _LoginPageState extends State<LoginPage> {
                          Row(
                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                            children: <Widget>[
-                             TextButton(
-                               style: TextButton.styleFrom(
-                                 textStyle: const TextStyle(
-                                     fontSize: 20,
-                                      fontFamily: 'Ruluko',
-                                      decoration: TextDecoration.underline
-                                 ),
-                                 primary: Colors.white,
-                               ),
-                               onPressed: () {},
-                               child: const Text('New User'),
-                             ),
-                             TextButton(
-                               style: TextButton.styleFrom(
-                                 textStyle: const TextStyle(
-                                     fontSize: 20,
-                                     fontFamily: 'Ruluko',
-                                     decoration: TextDecoration.underline
-                                 ),
-                                 primary: Colors.white,
-                               ),
-                               onPressed: () {},
-                               child: const Text('Forgot Password?'),
-                             ),
+                             LinkTextButton(labelText: 'New User'),
+                             LinkTextButton(labelText: 'Forgot Password?'),
                            ],
                          ),
                          SizedBox(
@@ -180,15 +133,16 @@ class _LoginPageState extends State<LoginPage> {
                  ),
                 ),
                 decoration: new BoxDecoration(
+                  borderRadius: BorderRadius.circular(11),
                   boxShadow: [
                     new BoxShadow(
                       color: Colors.black,
                       offset: const Offset(
-                        3.0,
-                        3.0,
+                        3.5,
+                        3.5,
                       ),
-                      blurRadius: 6.0,
-                      spreadRadius: 2.0
+                      blurRadius: 2.0,
+                      spreadRadius: 1.0
                     )
                   ]
                 )
@@ -199,3 +153,5 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+
