@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sahaayak_app/screens/Dashboard.dart';
 import 'package:sahaayak_app/screens/LoginPage.dart';
+import 'package:sahaayak_app/screens/SplashScreen.dart';
+import 'components/MainMenu.dart';
 void main(){
   runApp(MyApp());
 }
@@ -11,14 +14,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Sahaayak',
-      themeMode: ThemeMode.system,
-      initialRoute: LoginPage.id,
-      routes: {
-        LoginPage.id:(context)=>LoginPage(),
-      },
+      home: MainMenu(),
     );
   }
 }
