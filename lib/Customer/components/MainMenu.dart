@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'MenuItem.dart';
-import 'package:sahaayak_app/screens/Dashboard.dart';
-import 'package:sahaayak_app/screens/BookServices.dart';
-import 'package:sahaayak_app/screens/HiredTransactions.dart';
-import 'package:sahaayak_app/screens/PaymentHistory.dart';
-import 'package:sahaayak_app/screens/UpdateInfo.dart';
-import 'package:sahaayak_app/screens/Logout.dart';
+import 'package:sahaayak_app/Customer/screens/Dashboard.dart';
+import 'package:sahaayak_app/Customer/screens/BookServices.dart';
+import 'package:sahaayak_app/Customer/screens/HiredTransactions.dart';
+import 'package:sahaayak_app/Customer/screens/PaymentHistory.dart';
+import 'package:sahaayak_app/Customer/screens/UpdateInfo.dart';
+import 'package:sahaayak_app/Customer/screens/Logout.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -134,7 +134,7 @@ class _MainMenuState extends State<MainMenu> {
 List<MenuItem> createMenuItems() {
   final menuItems = [
     new MenuItem("Dashboard", Icons.dashboard_outlined ,() => new Dashboard()),
-    new MenuItem("Book Services", Icons.miscellaneous_services_outlined, () => new BookServices()),
+    new MenuItem("Book Services", Icons.bookmark_add_outlined, () => new BookServices()),
     new MenuItem("Hired Transactions", Icons.receipt_long_outlined, () => new HiredTransactions()),
     new MenuItem("Payment History", Icons.history_outlined, () => new PaymentHistory()),
     new MenuItem("Update Info", Icons.info_outlined,() => new UpdateInfo()),

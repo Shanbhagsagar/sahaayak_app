@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sahaayak_app/constants.dart';
-import 'package:sahaayak_app/components/RoundedInputField.dart';
-import 'package:sahaayak_app/components/LinkTextButton.dart';
+import 'package:sahaayak_app/Customer/components/RoundedInputField.dart';
+import 'package:sahaayak_app/Customer/components/LinkTextButton.dart';
 
 class LoginPage extends StatefulWidget {
   static const String id = 'login_page';

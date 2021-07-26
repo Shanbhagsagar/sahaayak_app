@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sahaayak_app/constants.dart';
-import 'package:sahaayak_app/screens/LoginPage.dart';
+import 'package:sahaayak_app/Customer/screens/LoginPage.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = 'splash_screen';
