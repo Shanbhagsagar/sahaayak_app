@@ -134,7 +134,7 @@ class _MainMenuState extends State<MainMenu> {
 List<MenuItem> createMenuItems() {
   final menuItems = [
     new MenuItem("Dashboard", Icons.dashboard_outlined ,() => new Dashboard()),
-    new MenuItem("Book Services", Icons.bookmark_add_outlined, () => new BookServices()),
+    //new MenuItem("Book Services", Icons.bookmark_add_outlined, () => new BookServices()),
     new MenuItem("Hired Transactions", Icons.receipt_long_outlined, () => new HiredTransactions()),
     new MenuItem("Payment History", Icons.history_outlined, () => new PaymentHistory()),
     new MenuItem("Update Info", Icons.info_outlined,() => new UpdateInfo()),

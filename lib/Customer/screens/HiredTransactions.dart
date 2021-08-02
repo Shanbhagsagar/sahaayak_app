@@ -23,7 +23,7 @@ class _HiredTransactionsState extends State<HiredTransactions> {
               Center(
                   child: Container(
                     width: 500,
-                    height: 332,
+
                     padding: new EdgeInsets.all(5.0),
                     child: Card(
                         shape: RoundedRectangleBorder(
