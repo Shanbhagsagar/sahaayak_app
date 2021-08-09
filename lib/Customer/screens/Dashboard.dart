@@ -20,13 +20,14 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text('Find Sahaayak'),
         backgroundColor: HexColor("#01274a"),
         onPressed: () => Navigator.push(context, MaterialPageRoute<void>(
           builder: (BuildContext context) => BookServices(),
           fullscreenDialog: true,
         )),
-        child: Icon(Icons.bookmark_add_outlined),
+        icon: Icon(Icons.bookmark_add_outlined),
       ),
       body: DashboardMainContent(),
     );
