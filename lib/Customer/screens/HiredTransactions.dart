@@ -16,6 +16,13 @@ class _HiredTransactionsState extends State<HiredTransactions> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/dash_back.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(

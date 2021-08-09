@@ -4,6 +4,15 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:sahaayak_app/Customer/screens/BookServices.dart';
 import 'package:sahaayak_app/constants.dart';
 import 'package:sahaayak_app/Customer/components/PhotoHero.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
+
+final List<String> imgList = [
+  'images/ad1.png',
+  'images/ad2.png',
+  'images/ad3.png',
+  'images/ad4.png'
+];
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -34,23 +43,62 @@ class DashboardMainContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/dash_back.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(5.0),
           child: Column(
             children: [
+              SizedBox(
+                height: 20.0,
+              ),
+              Flexible(
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    aspectRatio: 2.0,
+                    enlargeCenterPage: true,
+                    scrollDirection: Axis.horizontal,
+                    autoPlay: true,
+                  ),
+                  items: imgList
+                      .map((item) => Container(
+                  child: Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        child: Image.network(item, fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height ),
+                      ),
+                    ),
+                  ))
+                      .toList(),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
               Center(
                 child: Text(
                   "Active Services",
                   style: TextStyle(
                       fontFamily: kFontFamily1,
                       fontSize: 30.0,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.bold
+                  ),
                 ),
+              ),
+              SizedBox(
+                height: 30.0,
               ),
               Center(
                   child: Container(
                     width: 500,
-
                     padding: new EdgeInsets.all(5.0),
                     child: Card(
                         shape: RoundedRectangleBorder(
