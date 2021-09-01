@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'MenuItem.dart';
-import 'package:sahaayak_app/Customer/screens/Dashboard.dart';
-import 'package:sahaayak_app/Customer/screens/HiredTransactions.dart';
-import 'package:sahaayak_app/Customer/screens/PaymentHistory.dart';
-import 'package:sahaayak_app/Customer/screens/UpdateInfo.dart';
-import 'package:sahaayak_app/Customer/screens/Logout.dart';
+import 'package:sahaayak_app/Housekeeper/screens/Dashboard.dart';
+import 'package:sahaayak_app/Housekeeper/screens/HiredTransactions.dart';
+import 'package:sahaayak_app/Housekeeper/screens/PaymentHistory.dart';
+import 'package:sahaayak_app/Housekeeper/screens/UpdateInfo.dart';
+import 'package:sahaayak_app/Housekeeper/screens/Logout.dart';
 
-class MainMenu extends StatefulWidget {
-  const MainMenu({Key? key}) : super(key: key);
+class HMainMenu extends StatefulWidget {
+  const HMainMenu({Key? key}) : super(key: key);
 
   @override
-  _MainMenuState createState() => _MainMenuState();
+  _HMainMenuState createState() => _HMainMenuState();
 }
 
-class _MainMenuState extends State<MainMenu> {
+class _HMainMenuState extends State<HMainMenu> {
   late Widget _appBarTitle;
   late MenuItem _selectedMenuItem;
   late List<MenuItem> _menuItems;
@@ -135,10 +135,10 @@ List<MenuItem> createMenuItems() {
   final menuItems = [
     new MenuItem("Dashboard", Icons.dashboard_outlined, () => new Dashboard()),
     //new MenuItem("Book Services", Icons.bookmark_add_outlined, () => new BookServices()),
-    new MenuItem("Hired Transactions", Icons.receipt_long_outlined,
+    new MenuItem("Customers", Icons.receipt_long_outlined,
         () => new HiredTransactions()),
-    new MenuItem(
-        "Payment History", Icons.history_outlined, () => new PaymentHistory()),
+    new MenuItem("Payment History", Icons.history_outlined, () => new PaymentHistory()),
+    new MenuItem("Attendance", Icons.list_alt_outlined, () => new PaymentHistory()),
     new MenuItem("Update Info", Icons.info_outlined, () => new UpdateInfo()),
     new MenuItem("Logout", Icons.logout_outlined, () => new Logout()),
   ];
