@@ -248,11 +248,14 @@ class _BookServicesState extends State<BookServices> {
                       });
                     },
                     decoration: InputDecoration(
-                      labelText: 'City',
-                      icon: Icon(
-                        Icons.location_city,
-                        color: Colors.blueGrey,
+                      labelStyle: TextStyle(
+                        fontFamily: kFontFamily1,
+                        color: HexColor("#01274a"),
+                        fontWeight: FontWeight.bold,
                       ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0)),
+                      labelText: 'City',
                     ),
                     items: <String>[
                       'Dummy',

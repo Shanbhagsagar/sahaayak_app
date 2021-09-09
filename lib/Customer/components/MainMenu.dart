@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:sahaayak_app/Shared/screens/Update.dart';
 import 'MenuItem.dart';
 import 'package:sahaayak_app/Customer/screens/Dashboard.dart';
 import 'package:sahaayak_app/Customer/screens/HiredTransactions.dart';
@@ -139,7 +140,7 @@ List<MenuItem> createMenuItems() {
         () => new HiredTransactions()),
     new MenuItem(
         "Payment History", Icons.history_outlined, () => new PaymentHistory()),
-    new MenuItem("Update Info", Icons.info_outlined, () => new UpdateInfo()),
+    new MenuItem("Update Info", Icons.info_outlined, () => new UpdatePage()),
     new MenuItem("Logout", Icons.logout_outlined, () => new Logout()),
   ];
   return menuItems;
