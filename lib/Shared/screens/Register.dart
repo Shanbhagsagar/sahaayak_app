@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sahaayak_app/constants.dart';
@@ -16,6 +18,10 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool isChecked = false;
   bool isSahaayak = false;
+  Image pfpImg = Image.asset(
+    'images/defimg.jpg',
+    width: 160.0, height: 160.0, fit: BoxFit.cover,
+  );
   static String? typeDropDownVal;
 
   @override
@@ -64,11 +70,39 @@ class _RegisterPageState extends State<RegisterPage> {
                             SizedBox(
                               height: 25,
                             ),
-                            RoundedInputField(obscureText: false,labelText: 'Name'),
                             SizedBox(
-                              height: 25,
+                              child: CircleAvatar(
+                                radius: 65.0,
+                                backgroundColor: Colors.white,
+                                child: CircleAvatar(
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 19.0,
+                                      child: IconButton(
+                                        splashRadius: 22,
+                                        icon: Icon(Icons.camera_enhance,size: 22,),
+                                        onPressed: () async {
+                                          FilePickerResult? pfp = await FilePicker.platform.pickFiles(type: FileType.image);
+                                          pfp!=null?
+                                          setState(() {
+                                            pfpImg = kIsWeb?
+                                            Image.memory(pfp.files.first.bytes!):
+                                            Image.file(File(pfp.files.first.path));
+                                          })
+                                          :print('Cancel');
+                                        },
+                                        color: HexColor("#01274a"),
+                                      ),
+                                    ),
+                                  ),
+                                  radius: 63.0,
+                                  backgroundImage: pfpImg.image,
+                                  foregroundColor: Colors.white,
+                                ),
+                              ),
                             ),
-                            RoundedInputField(obscureText: false,labelText: 'Phone'),
                             SizedBox(
                               height: 25,
                             ),
@@ -93,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   fontWeight: FontWeight.bold,
                                 ),
                                 border:  OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
-                                labelText: 'Profile',
+                                labelText: 'Profile Type',
                               ),
                               items: <String>[
                                 'Sahaayak',
@@ -108,11 +142,19 @@ class _RegisterPageState extends State<RegisterPage> {
                             SizedBox(
                               height: 25,
                             ),
-                            RoundedInputField(obscureText: false,labelText: 'Email'),
+                            RoundedInputField(obscureText: false,labelText: 'Name',colorType: Colors.white),
                             SizedBox(
                               height: 25,
                             ),
-                            RoundedInputField(obscureText: true,labelText: 'Password'),
+                            RoundedInputField(obscureText: false,labelText: 'Phone',colorType: Colors.white),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            RoundedInputField(obscureText: false,labelText: 'Email',colorType: Colors.white),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            RoundedInputField(obscureText: true,labelText: 'Password',colorType: Colors.white),
                             SizedBox(
                               height: 25,
                             ),
@@ -129,8 +171,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   shadowColor: Colors.black
                               ),
                               onPressed: () async {
-                                var idProof = await FilePicker.platform.pickFiles();
-
+                                FilePickerResult? idProof = await FilePicker.platform.pickFiles(allowedExtensions: ['pdf'],type: FileType.custom,allowMultiple: false);
+                                print('${idProof?.files.first.name},${idProof?.files.first.size}');
+                                idProof!.files.first.size<=10000000?print("OK"):print("NOT OK");
                               },
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -141,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ],
                               ),
                             ):SizedBox(
-                              height: 10,
+                              height: 0,
                             ),
                             SizedBox(
                               height: 10,
@@ -202,7 +245,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ],
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 30,
                             ),
                           ],
                         ),
@@ -224,6 +267,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ]
                   )
               ),
+
             ),
           ),
         ),

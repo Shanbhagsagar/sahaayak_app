@@ -61,11 +61,11 @@ class _LoginPageState extends State<LoginPage> {
                          SizedBox(
                            height: 25,
                          ),
-                         RoundedInputField(obscureText: false,labelText: 'Email'),
+                         RoundedInputField(obscureText: false,labelText: 'Email',colorType: Colors.white),
                          SizedBox(
                            height: 30,
                          ),
-                         RoundedInputField(obscureText: true,labelText: 'Password'),
+                         RoundedInputField(obscureText: true,labelText: 'Password',colorType: Colors.white),
                          SizedBox(
                            height: 10,
                          ),

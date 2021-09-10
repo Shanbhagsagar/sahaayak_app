@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sahaayak_app/Customer/screens/SplashScreen.dart';
 import 'package:sahaayak_app/Shared/screens/Register.dart';
+import 'package:sahaayak_app/Shared/screens/Update.dart';
 import 'Customer/components/MainMenu.dart';
 import 'Housekeeper/components/HMainMenu.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Sahaayak',
-        home: RegisterPage(),
+        home: MainMenu(),
     );
   }
 }
