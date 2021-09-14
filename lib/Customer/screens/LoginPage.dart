@@ -78,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                                onChanged: (bool? value) {
                                  setState(() {
                                    isChecked = value!;
+
                                  });
                                },
                              ),

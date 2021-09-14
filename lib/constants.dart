@@ -8,3 +8,4 @@ const BoxDecoration kBackgroundBoxDecoration = BoxDecoration(
     fit: BoxFit.cover,
   ),
 );
+

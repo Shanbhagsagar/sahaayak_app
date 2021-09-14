@@ -39,7 +39,7 @@ class DashboardMainContent extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(5.0)),
-                                child: Image.network(item,
+                                child: Image.asset(item,
                                     fit: BoxFit.cover,
                                     width: MediaQuery.of(context).size.width,
                                     height: MediaQuery.of(context).size.height),
