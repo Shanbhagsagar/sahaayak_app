@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sahaayak_app/constants.dart';
 import 'package:sahaayak_app/Customer/components/ActiveServiceCard.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
+import '../../constants.dart';
 
 final List<String> imgList = [
   'images/ad1.png',
@@ -10,7 +13,12 @@ final List<String> imgList = [
   'images/ad4.png'
 ];
 
+
+
 class DashboardMainContent extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

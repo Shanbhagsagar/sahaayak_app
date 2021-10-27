@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sahaayak_app/Shared/components/validation.dart';
 import 'package:sahaayak_app/constants.dart';
 
 class RoundedInputField extends StatefulWidget {
@@ -6,24 +8,30 @@ class RoundedInputField extends StatefulWidget {
   RoundedInputField(
       {
       required this.labelText,
-      required this.textcontroller});
+      required this.textcontroller,
+      });
 
   final String labelText;
   final TextEditingController textcontroller;
+
 
   @override
   _RoundedInputFieldState createState() => _RoundedInputFieldState();
 }
 
 class _RoundedInputFieldState extends State<RoundedInputField> {
+
+  bool _autoEmailValidate = false;
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
         width: 300,
-        child: TextField(
+        child: TextFormField(
           controller: widget.textcontroller,
           style: TextStyle(color: Colors.white, fontFamily: kFontFamily1),
+            keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(11.0)),
@@ -40,8 +48,13 @@ class _RoundedInputFieldState extends State<RoundedInputField> {
               fontWeight: FontWeight.bold,
             ),
             hoverColor: Colors.white,
+
           ),
-        ),
+            inputFormatters: <TextInputFormatter>[
+              LengthLimitingTextInputFormatter(35),
+              FilteringTextInputFormatter.singleLineFormatter
+            ],
+         ),
       ),
     );
   }

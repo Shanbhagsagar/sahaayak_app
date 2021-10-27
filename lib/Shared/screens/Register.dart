@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:sahaayak_app/Customer/components/MainMenu.dart';
 import 'package:sahaayak_app/Shared/components/FirebaseApi.dart';
+import 'package:sahaayak_app/Shared/screens/LoginPage.dart';
 import 'package:sahaayak_app/constants.dart';
 import 'package:sahaayak_app/Shared/components/RoundedInputField.dart';
-import 'package:sahaayak_app/Firebase.dart';
+import 'package:sahaayak_app/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:path/path.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -31,6 +31,8 @@ class _RegisterPageState extends State<RegisterPage> {
     fit: BoxFit.cover,
   );
   static String? typeDropDownVal;
+  static String? cityDropDownVal;
+  static String? genderDropDownVal;
   File? file;
   File? file1;
   static final TextEditingController _nameController = TextEditingController();
@@ -38,6 +40,8 @@ class _RegisterPageState extends State<RegisterPage> {
   static final TextEditingController _emailController = TextEditingController();
   static final TextEditingController _passwordController =
       TextEditingController();
+
+  String? url;
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +171,124 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(
                   height: 25,
                 ),
+                isSahaayak
+                    ? Center(
+                        child: SizedBox(
+                          width: 300,
+                          child: DropdownButtonFormField(
+                            iconEnabledColor: Colors.white,
+                            dropdownColor: Colors.lightBlue,
+                            value: genderDropDownVal,
+                            onChanged: (newValue) {
+                              setState(() {
+                                genderDropDownVal = newValue.toString();
+                              });
+                            },
+                            focusColor: Colors.black,
+                            decoration: InputDecoration(
+                              labelStyle: TextStyle(
+                                fontFamily: kFontFamily1,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(11.0)),
+                                borderSide: const BorderSide(
+                                    color: Colors.white, width: 2.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(11.0)),
+                                borderSide: const BorderSide(
+                                    color: Colors.white, width: 2.0),
+                              ),
+                              labelText: 'Gender',
+                            ),
+                            items: <String>[
+                              'Male',
+                              'Female',
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    backgroundColor: Colors.transparent,
+                                    fontFamily: kFontFamily1,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        height: 0,
+                      ),
+                SizedBox(
+                  height: 25,
+                ),
+                isSahaayak
+                    ? Center(
+                        child: SizedBox(
+                          width: 300,
+                          child: DropdownButtonFormField(
+                            iconEnabledColor: Colors.white,
+                            dropdownColor: Colors.lightBlue,
+                            value: cityDropDownVal,
+                            onChanged: (newValue) {
+                              setState(() {
+                                cityDropDownVal = newValue.toString();
+                              });
+                            },
+                            focusColor: Colors.black,
+                            decoration: InputDecoration(
+                              labelStyle: TextStyle(
+                                fontFamily: kFontFamily1,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(11.0)),
+                                borderSide: const BorderSide(
+                                    color: Colors.white, width: 2.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(11.0)),
+                                borderSide: const BorderSide(
+                                    color: Colors.white, width: 2.0),
+                              ),
+                              labelText: 'City',
+                            ),
+                            items: <String>['Dombivli', 'Kalyan', 'Thane']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    backgroundColor: Colors.transparent,
+                                    fontFamily: kFontFamily1,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        height: 0,
+                      ),
+                SizedBox(
+                  height: 25,
+                ),
                 RoundedInputField(
                     labelText: 'Phone', textcontroller: _phoneController),
                 SizedBox(
@@ -269,38 +391,48 @@ class _RegisterPageState extends State<RegisterPage> {
                         shadowColor: Colors.black),
                     onPressed: () async {
                       try {
+
+                        UserCredential user = await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text.trim());
+
+                          var imageFile = FirebaseStorage.instance.ref().child("files").child("abc.jpg");
+                          UploadTask task =  imageFile.putFile(file!);
+                          TaskSnapshot snapshot = await task ;
+
+                          url = await snapshot.ref.getDownloadURL();
+                          print(url);
+
                         Map<String, dynamic> userData = {
                           "profileType": typeDropDownVal,
                           "displayName": _nameController.text,
                           "phoneNo": _phoneController.text,
                           "email": _emailController.text,
                           "password": _passwordController.text,
-                          "Image Name": filename,
-                          "isNewUser": true,
-                        };
+                          "ImageName": filename,
+                          "url": url
+                         };
                         Map<String, dynamic> userData1 = {
                           "profileType": typeDropDownVal,
                           "displayName": _nameController.text,
                           "phoneNo": _phoneController.text,
                           "email": _emailController.text,
                           "password": _passwordController.text,
-                          "Image Name": filename,
-                          "Adhaar Name": filename1,
-                          "isNewUser": true,
-                        };
-                        await Firebase.initializeApp();
-                        UserCredential user = await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                                email: _emailController.text,
-                                password: _passwordController.text);
+                          "ImageName": filename,
+                          "AdhaarName": filename1,
+                          "City": cityDropDownVal,
+                          "Gender": genderDropDownVal,
+                          };
+
                         userSetup(_nameController.text,
                             isSahaayak ? userData1 : userData);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MainMenu()),
-                        );
-                        uploadFile();
+                        // uploadFile();
                         isSahaayak ? uploadAdhaar() : print("Not Valid");
+                        Navigator.pop(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
                       } on FirebaseAuthException catch (e) {
                         if (e.code == "weak-password") {
                           print("The password provided is too weak");
@@ -343,14 +475,26 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() => file = File(path));
   }
 
-  Future uploadFile() async {
-    if (file == null) return;
-
-    final filename = basename(file!.path);
-    final destination = 'files/$filename';
-
-    FirebaseApi.uploadFile(destination, file!);
-  }
+  // Future uploadFile() async {
+  //   if (file == null) return;
+  //
+  //   final filename = basename(file!.path);
+  //   final destination = 'files/$filename';
+  //
+  //   print(destination);
+  //
+  //   FirebaseApi.uploadFile(destination, file!);
+  //   print(FirebaseApi.uploadFile(destination, file!));
+  //
+  //   // var imageFile = FirebaseStorage.instance.ref().child("files").child("/.jpg");
+  //   // UploadTask task =  imageFile.putFile(file!);
+  //   // TaskSnapshot snapshot = await task ;
+  //   //
+  //   // url = await snapshot.ref.getDownloadURL();
+  //
+  //
+  //
+  // }
 
   Future selectAdhaar() async {
     FilePickerResult? idProof = await FilePicker.platform.pickFiles(

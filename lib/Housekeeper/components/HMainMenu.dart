@@ -1,16 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/src/provider.dart';
 import 'package:sahaayak_app/Shared/screens/Update.dart';
+import 'package:sahaayak_app/authentication_service.dart';
+import '../../constants.dart';
 import 'MenuItem.dart';
 import 'package:sahaayak_app/Housekeeper/screens/Dashboard.dart';
 import 'package:sahaayak_app/Housekeeper/screens/HiredTransactions.dart';
 import 'package:sahaayak_app/Housekeeper/screens/PaymentHistory.dart';
-import 'package:sahaayak_app/Housekeeper/screens/UpdateInfo.dart';
-import 'package:sahaayak_app/Housekeeper/screens/Logout.dart';
 
 class HMainMenu extends StatefulWidget {
-  const HMainMenu({Key? key}) : super(key: key);
-
+  static const String id = 'hmain_menu';
+  final String? displayName;
+  final String? uid;
+  const HMainMenu (this.displayName,this.uid);
   @override
   _HMainMenuState createState() => _HMainMenuState();
 }
@@ -25,7 +29,7 @@ class _HMainMenuState extends State<HMainMenu> {
   initState() {
     super.initState();
 
-    _menuItems = createMenuItems();
+    _menuItems = createMenuItems(context,widget.uid);
     _selectedMenuItem = _menuItems.first;
     _appBarTitle = new Text(
       _menuItems.first.title,
@@ -104,9 +108,18 @@ class _HMainMenuState extends State<HMainMenu> {
           children: <Widget>[
             new Container(
                 child: new ListTile(
-                    leading: new Image.asset('images/handshake.png',
-                        width: 50.0, height: 50.0),
-                    title: Text("romalon1@gmail.com")),
+                   title: Padding(
+                     padding: EdgeInsets.only(top: 30.0),
+                     child: Text((widget.displayName).toString(),
+                       textAlign: TextAlign.center,
+                       style: TextStyle(
+                           fontSize: 20.0,
+                           fontFamily: kFontFamily1,
+                           fontWeight: FontWeight.bold,
+                           color: HexColor("#01274a")
+                       ),
+                     ),
+                   )),
                 margin: new EdgeInsetsDirectional.only(top: 20.0),
                 color: Colors.white,
                 constraints: BoxConstraints(maxHeight: 90.0, minHeight: 90.0)),
@@ -132,16 +145,20 @@ class _HMainMenuState extends State<HMainMenu> {
   }
 }
 
-List<MenuItem> createMenuItems() {
+List<MenuItem> createMenuItems(BuildContext context,String? huid) {
   final menuItems = [
     new MenuItem("Dashboard", Icons.dashboard_outlined, () => new Dashboard()),
     //new MenuItem("Book Services", Icons.bookmark_add_outlined, () => new BookServices()),
     new MenuItem("Customers", Icons.receipt_long_outlined,
         () => new HiredTransactions()),
-    new MenuItem("Payment History", Icons.history_outlined, () => new PaymentHistory()),
-    new MenuItem("Attendance", Icons.list_alt_outlined, () => new PaymentHistory()),
-    new MenuItem("Update Info", Icons.info_outlined, () => new UpdatePage()),
-    new MenuItem("Logout", Icons.logout_outlined, () => new Logout()),
+    new MenuItem(
+        "Payment History", Icons.history_outlined, () => new PaymentHistory()),
+    new MenuItem(
+        "Attendance", Icons.list_alt_outlined, () => new PaymentHistory()),
+    new MenuItem("Update Info", Icons.info_outlined, () => new UpdatePage(huid)),
+    new MenuItem("Logout", Icons.logout_outlined, () {
+      context.read<AuthenticationService>().signOut();
+    }),
   ];
   return menuItems;
 }
