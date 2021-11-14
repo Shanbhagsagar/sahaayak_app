@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sahaayak_app/constants.dart';
@@ -13,11 +15,12 @@ final List<String> imgList = [
   'images/ad4.png'
 ];
 
+class DashboardMainContent extends StatefulWidget {
+  @override
+  State<DashboardMainContent> createState() => _DashboardMainContentState();
+}
 
-
-class DashboardMainContent extends StatelessWidget {
-
-
+class _DashboardMainContentState extends State<DashboardMainContent> {
 
   @override
   Widget build(BuildContext context) {
@@ -79,4 +82,6 @@ class DashboardMainContent extends StatelessWidget {
       ),
     );
   }
+
+
 }

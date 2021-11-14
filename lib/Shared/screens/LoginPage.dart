@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/src/provider.dart';
 import 'package:sahaayak_app/Shared/components/validation.dart';
@@ -51,8 +53,7 @@ class _LoginPageState extends State<LoginPage> {
             child: SingleChildScrollView(
               child: Form(
                 key: _formKey,
-                autovalidateMode:
-                AutovalidateMode.onUserInteraction,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: <Widget>[
                     SizedBox(
@@ -82,37 +83,12 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(
                                 color: Colors.white, fontFamily: kFontFamily1),
                             keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(11.0)),
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(11.0)),
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
-                              ),
-                              labelText: 'Email',
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                                fontFamily: kFontFamily1,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              hoverColor: Colors.white,
-                            ),
-                            inputFormatters: <TextInputFormatter>[
-                              LengthLimitingTextInputFormatter(35),
-                              FilteringTextInputFormatter.singleLineFormatter
-                            ],
+                            decoration: kInputEmailDecoration,
                             validator: (value) {
                               return Validation.emailValidation(value);
                             },
                             autovalidateMode:
-                                AutovalidateMode.onUserInteraction
-                        ),
+                                AutovalidateMode.onUserInteraction),
                       ),
                     ),
                     SizedBox(
@@ -129,16 +105,20 @@ class _LoginPageState extends State<LoginPage> {
                             // keyboardType: TextInputType.visiblePassword,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(11.0)),
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
+                                borderRadius: BorderRadius.all(Radius.circular(11.0)),
+                                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(11.0)),
+                                borderSide: BorderSide(color: Colors.white, width: 2.0),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(11.0)),
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
+                                borderRadius: BorderRadius.all(Radius.circular(11.0)),
+                                borderSide: BorderSide(color: Colors.white, width: 2.0),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(11.0)),
+                                borderSide: BorderSide(color: Colors.red, width: 2.0),
                               ),
                               labelText: 'Password',
                               labelStyle: TextStyle(
@@ -147,6 +127,10 @@ class _LoginPageState extends State<LoginPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                               hoverColor: Colors.white,
+                              prefixIcon: Icon(
+                                Icons.password_outlined,
+                                color: Colors.white,
+                              ),
                               suffixIcon: GestureDetector(
                                   onTap: () {
                                     setState(() {
@@ -168,8 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                               return Validation.passwordValidation(value);
                             },
                             autovalidateMode:
-                                AutovalidateMode.onUserInteraction
-                          ),
+                                AutovalidateMode.onUserInteraction),
                       ),
                     ),
                     SizedBox(
@@ -188,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                             textStyle:
                                 TextStyle(fontFamily: 'Ruluko', fontSize: 20),
                             shadowColor: Colors.black),
-                        onPressed: () async {
+                        onPressed: () {
                           context.read<AuthenticationService>().signIn(
                                 email: _emailController.text.trim(),
                                 password: _passwordController.text.trim(),
@@ -220,12 +203,31 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RegisterPage()),
-                            );
+                          onPressed: () async {
+                            if (_emailController.text.length == 0) {
+                              Fluttertoast.showToast(
+                                  msg:
+                                      "Please provide your Email ID for Forgot Password",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 5,
+                                  backgroundColor: Colors.yellow.shade900,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            } else {
+                              await FirebaseAuth.instance
+                                  .sendPasswordResetEmail(
+                                      email: _emailController.text.trim())
+                                  .then((value) => Fluttertoast.showToast(
+                                      msg:
+                                          "Reset your password mail has been sent on your registered Email ID.",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 5,
+                                      backgroundColor: Colors.yellow.shade900,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0));
+                            }
                           },
                           child: const Text(
                             'Forgot Password ?',

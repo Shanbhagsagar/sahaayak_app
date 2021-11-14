@@ -14,11 +14,10 @@ class Dashboard extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         label: Text('Find Sahaayak'),
         backgroundColor: HexColor("#01274a"),
-       onPressed: () => Navigator.push(
+        onPressed: () => Navigator.push(
             context,
             MaterialPageRoute<void>(
               builder: (BuildContext context) => BookServices(),
-
               fullscreenDialog: true,
             )),
         icon: Icon(Icons.bookmark_add_outlined),
