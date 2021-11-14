@@ -104,3 +104,28 @@ Future<void> userSetup(
   String uid = auth.currentUser!.uid.toString();
   users.doc(uid).set(userData);
 }
+
+Future<void> requestSetup(String id, Map<String, dynamic> requestData) async {
+  CollectionReference req = FirebaseFirestore.instance.collection('Requests');
+  FirebaseAuth auth = FirebaseAuth.instance;
+  req.doc(id).set(requestData);
+}
+
+Future<bool> requestAcceptance(Map<String, dynamic> requestMap, String? huid) async {
+  CollectionReference req = FirebaseFirestore.instance.collection('Requests');
+  print('inside requestAccepted');
+  print(requestMap);
+  requestMap.update('accepted', (value) => true);
+  requestMap.update('housekeeperID', (value) => huid);
+  req.doc(requestMap['requestID'].toString()).update(requestMap).onError((error, stackTrace) {
+    print('requestAcceptance error');
+    return false;
+  });
+  return true;
+
+  // for (var doc in querySnapshots.docs) {
+  //   await doc.reference.update({
+  //     'single_field': 'newValue',
+  //   });
+  // }
+}

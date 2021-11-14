@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sahaayak_app/Customer/components/PhotoHero.dart';
+import 'package:sahaayak_app/Housekeeper/components/PhotoHero.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sahaayak_app/constants.dart';
 

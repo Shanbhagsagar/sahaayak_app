@@ -643,7 +643,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                             ),
                             duration: const Duration(minutes: 2),
-                            dismissDirection: DismissDirection.up,
                             action: SnackBarAction(
                               label: 'Login',
                               textColor: Colors.white,

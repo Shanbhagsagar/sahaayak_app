@@ -1,11 +1,20 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:nanoid/nanoid.dart';
+import 'package:sahaayak_app/Customer/components/Payment.dart';
+import 'package:sahaayak_app/Shared/components/validation.dart';
+import 'package:sahaayak_app/authentication_service.dart';
 import 'package:sahaayak_app/constants.dart';
 
 class BookServices extends StatefulWidget {
-  const BookServices({Key? key}) : super(key: key);
+  const BookServices(this.custUID, this.displayName);
+
+  final String? custUID;
+  final String? displayName;
 
   @override
   _BookServicesState createState() => _BookServicesState();
@@ -13,6 +22,7 @@ class BookServices extends StatefulWidget {
 
 class _BookServicesState extends State<BookServices> {
   final _formKey = GlobalKey<FormState>();
+  static TextEditingController _addressController = TextEditingController();
   static String? cityDropDownVal;
   static int? _payPrice = _servicePrice[_serviceNameList[0]];
   static int _payDays = 1;
@@ -83,11 +93,11 @@ class _BookServicesState extends State<BookServices> {
   }
 
   priceCalcLogic() async {
-    dynamic tempPrice=0;
+    dynamic tempPrice = 0;
     _serviceList.forEach((key, value) {
-      if (value) tempPrice+=_servicePrice[key];
+      if (value) tempPrice += _servicePrice[key];
     });
-    _payPrice = tempPrice*_payDays;
+    _payPrice = tempPrice * _payDays;
   }
 
   setSelectedCheckboxTile(bool val, String s) {
@@ -99,7 +109,6 @@ class _BookServicesState extends State<BookServices> {
 
   void _selectDate() async {
     final DateTimeRange? newDate = await showDateRangePicker(
-
       context: context,
       initialDateRange: _date,
       firstDate: DateTime(_currentYear, _currentMonth, findStartDate()),
@@ -111,7 +120,7 @@ class _BookServicesState extends State<BookServices> {
           data: Theme.of(context).copyWith(
             primaryColor: HexColor("#01274a"),
             colorScheme: ColorScheme.light(
-              primary: HexColor("#01274a"),// body text color
+              primary: HexColor("#01274a"), // body text color
             ),
           ),
           child: child!,
@@ -136,11 +145,10 @@ class _BookServicesState extends State<BookServices> {
         return Theme(
           data: Theme.of(context).copyWith(
             primaryColor: HexColor("#01274a"),
-
             colorScheme: ColorScheme.light(
-              primary: HexColor("#01274a"),
-              secondary: Colors.white// body text color
-            ),
+                primary: HexColor("#01274a"),
+                secondary: Colors.white // body text color
+                ),
           ),
           child: child!,
         );
@@ -185,6 +193,7 @@ class _BookServicesState extends State<BookServices> {
           child: Container(
             width: 320,
             child: Form(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               key: _formKey,
               child: Column(
                 children: [
@@ -239,6 +248,9 @@ class _BookServicesState extends State<BookServices> {
                     height: 15.0,
                   ),
                   DropdownButtonFormField(
+                    validator: (value) {
+                      return Validation.locCityValidation(cityDropDownVal);
+                    },
                     value: cityDropDownVal,
                     elevation: 10,
                     onChanged: (newValue) {
@@ -258,18 +270,36 @@ class _BookServicesState extends State<BookServices> {
                       labelText: 'City',
                     ),
                     items: <String>[
-                      'Dummy',
-                      'Dumy',
-                      'Dumfgmy',
-                      'Duggmmy',
-                      'Dumxvcvmy',
-                      'Dummyyyyyyyyyyyyyyyyy',
+                      'Thane',
+                      'Dombivli',
+                      'Kalyan',
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
                       );
                     }).toList(),
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  TextFormField(
+                    controller: _addressController,
+                    validator: (value) {
+                      return Validation.locAddressValidation(
+                          _addressController.text);
+                    },
+                    style: TextStyle(
+                      fontFamily: kFontFamily1,
+                      color: HexColor("#01274a"),
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Address',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0)),
+                    ),
+                    keyboardType: TextInputType.streetAddress,
                   ),
                   SizedBox(
                     height: 15.0,
@@ -478,12 +508,11 @@ class _BookServicesState extends State<BookServices> {
                     height: 35.0,
                   ),
                   Text(
-                    "Total : ${_payPrice == null ? 'Calculating' : NumberFormat.simpleCurrency(name: 'INR',decimalDigits: 0).format(_payPrice)}",
+                    "Total : ${_payPrice == null ? 'Calculating' : NumberFormat.simpleCurrency(name: 'INR', decimalDigits: 0).format(_payPrice)}",
                     style: TextStyle(
-                      fontSize: 22.0,
-                      fontFamily: kFontFamily1,
-                      fontWeight: FontWeight.bold
-                    ),
+                        fontSize: 22.0,
+                        fontFamily: kFontFamily1,
+                        fontWeight: FontWeight.bold),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
@@ -492,7 +521,7 @@ class _BookServicesState extends State<BookServices> {
                         constraints: BoxConstraints.tightForFinite(
                             height: 40.0, width: double.maxFinite),
                         child: ElevatedButton(
-                            child: Text("Search".toUpperCase(),
+                            child: Text("Request".toUpperCase(),
                                 style: TextStyle(
                                     fontSize: 20.0, fontFamily: kFontFamily1)),
                             style: ButtonStyle(
@@ -501,7 +530,234 @@ class _BookServicesState extends State<BookServices> {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   HexColor("#01274a")),
                             ),
-                            onPressed: () => null),
+                            onPressed: () async {
+                              try {
+                                if (_formKey.currentState!.validate()) {
+                                  String serviceArray = "";
+                                  String gender = selectedRadioTile.isOdd
+                                      ? "Male"
+                                      : "Female";
+                                  String id = customAlphabet('1234567890', 7);
+                                  _serviceList.forEach((key, value) {
+                                    if (value == true) serviceArray += ",$key";
+                                  });
+
+                                  Map<String, dynamic> requestData = {
+                                    "requestID": id,
+                                    "customerID": widget.custUID,
+                                    "customerName": widget.displayName,
+                                    "customerAddress": _addressController.text,
+                                    "housekeeperID": null,
+                                    "gender": gender,
+                                    "city": cityDropDownVal!,
+                                    "services": serviceArray.substring(1),
+                                    "days": _payDays,
+                                    "fromDate":
+                                        '${_date.start.year}-${_date.start.month}-${_date.start.day}',
+                                    "toDate": _payDays == 1
+                                        ? '${_date.start.year}-${_date.start.month}-${_date.start.day}'
+                                        : '${_date.end.year}-${_date.end.month}-${_date.end.day}',
+                                    "time": "${_time.hour}:${_time.minute}",
+                                    "price": _payPrice,
+                                    "accepted": false,
+                                  };
+
+                                  print(requestData);
+
+                                  requestSetup(id, requestData)
+                                      .whenComplete(() {
+                                    print('//RequestSetup Done');
+                                  });
+
+                                  Stream<DocumentSnapshot<Map<String, dynamic>>>
+                                      reqDocStream = FirebaseFirestore.instance
+                                          .collection('Requests')
+                                          .doc(id)
+                                          .snapshots();
+
+                                  showModalBottomSheet<void>(
+                                    isDismissible: false,
+                                    enableDrag: false,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return StreamBuilder<
+                                              DocumentSnapshot<
+                                                  Map<String, dynamic>>>(
+                                          stream: reqDocStream,
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.active) {
+                                              Map<String, dynamic>? requestMap =
+                                                  snapshot.data!.data();
+                                              bool accepted =
+                                                  requestMap!['accepted'];
+
+                                              print(
+                                                  '$requestMap inside StreamBuilder');
+
+                                              print('//CLEAR');
+                                              try {
+                                                if(accepted==true){
+                                                  Future.delayed(const Duration(milliseconds: 2000), () {
+                                                    Navigator.of(context).pop();
+                                                    Navigator.of(context).pop();
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute<void>(
+                                                          builder: (BuildContext context) => PaymentScreen(widget.displayName,requestMap),
+                                                          fullscreenDialog: true,
+                                                        ));
+                                                  });
+                                                }
+                                                return accepted == false
+                                                    ? Container(
+                                                        height: 300,
+                                                        child: Column(
+                                                          children: [
+                                                            Align(
+                                                              alignment: Alignment
+                                                                  .bottomRight,
+                                                              child: IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  icon: Icon(Icons
+                                                                      .close)),
+                                                            ),
+                                                            Container(
+                                                              height: 200,
+                                                              child: Center(
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: <
+                                                                      Widget>[
+                                                                    const Center(
+                                                                      child:
+                                                                          CircularProgressIndicator(),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          15,
+                                                                    ),
+                                                                    const Text(
+                                                                      'Waiting for a Saahayak to accept the request',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            18.0,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        fontFamily:
+                                                                            kFontFamily1,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Container(
+                                                        height: 300,
+                                                        child: Column(
+                                                          children: [
+                                                            Align(
+                                                              alignment: Alignment
+                                                                  .bottomRight,
+                                                              child: IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  icon: Icon(Icons
+                                                                      .close),color: Colors.white,splashColor: Colors.white,),
+                                                            ),
+                                                            Container(
+                                                              height: 200,
+                                                              child: Center(
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Center(child: Icon(Icons.thumb_up,color: Colors.green.shade900,)),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          15,
+                                                                    ),
+                                                                    const Text(
+                                                                      'A Saahayak has accepted your request',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            18.0,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        fontFamily:
+                                                                            kFontFamily1,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                      15,
+                                                                    ),
+                                                                    Center(
+                                                                      child: const Text(
+                                                                        'Redirecting',
+                                                                        style:
+                                                                        TextStyle(
+                                                                          fontSize:
+                                                                          18.0,
+                                                                          fontWeight:
+                                                                          FontWeight.bold,
+                                                                          fontFamily:
+                                                                          kFontFamily1,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                              } on Exception catch (e) {
+                                                print(e);
+                                                return MyProgressIndicator();
+                                              }
+                                            }
+                                            return MyProgressIndicator();
+                                          });
+                                    },
+                                  );
+
+                                  // requestSetup(id, requestData)
+                                  //     .whenComplete(() =>SnackBar(
+                                  //   behavior: SnackBarBehavior.floating,
+                                  //   content: Text('Request has been successfully posted'),
+                                  // ),
+                                  // );
+                                }
+                              } catch (Ex) {
+                                print("##########BookService#########");
+                                print(Ex);
+                              }
+                            }),
                       ),
                     ),
                   ),
@@ -514,6 +770,12 @@ class _BookServicesState extends State<BookServices> {
           ),
         ),
       ),
+    );
+  }
+
+  Center MyProgressIndicator() {
+    return Center(
+      child: CircularProgressIndicator(),
     );
   }
 }

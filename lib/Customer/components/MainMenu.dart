@@ -30,7 +30,7 @@ class _MainMenuState extends State<MainMenu> {
   @override
   initState() {
     super.initState();
-     _menuItems = createMenuItems(context,widget.uid);
+     _menuItems = createMenuItems(context,widget.uid,widget.displayName);
     _selectedMenuItem = _menuItems.first;
      _appBarTitle = new Text(
       _menuItems.first.title,
@@ -146,9 +146,9 @@ class _MainMenuState extends State<MainMenu> {
   }
 }
 
-List<MenuItem> createMenuItems(BuildContext context, String? muid) {
+List<MenuItem> createMenuItems(BuildContext context, String? muid, String? displayName) {
   final menuItems = [
-    new MenuItem("Dashboard", Icons.dashboard_outlined, () => new Dashboard()),
+    new MenuItem("Dashboard", Icons.dashboard_outlined, () => new Dashboard(muid,displayName)),
     //new MenuItem("Book Services", Icons.bookmark_add_outlined, () => new BookServices()),
     new MenuItem("Hired Transactions", Icons.receipt_long_outlined,
             () => new HiredTransactions()),

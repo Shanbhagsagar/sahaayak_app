@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sahaayak_app/constants.dart';
-import 'package:sahaayak_app/Customer/components/ActiveServiceCard.dart';
+import 'package:sahaayak_app/Housekeeper/components/ActiveServiceCard.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
+import '../../constants.dart';
 
 final List<String> imgList = [
   'images/ad1.png',
@@ -39,7 +41,7 @@ class DashboardMainContent extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(5.0)),
-                                child: Image.network(item,
+                                child: Image.asset(item,
                                     fit: BoxFit.cover,
                                     width: MediaQuery.of(context).size.width,
                                     height: MediaQuery.of(context).size.height),

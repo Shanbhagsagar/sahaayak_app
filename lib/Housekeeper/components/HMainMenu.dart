@@ -147,7 +147,7 @@ class _HMainMenuState extends State<HMainMenu> {
 
 List<MenuItem> createMenuItems(BuildContext context,String? huid) {
   final menuItems = [
-    new MenuItem("Dashboard", Icons.dashboard_outlined, () => new Dashboard()),
+    new MenuItem("Dashboard", Icons.dashboard_outlined, () => new Dashboard(huid)),
     //new MenuItem("Book Services", Icons.bookmark_add_outlined, () => new BookServices()),
     new MenuItem("Customers", Icons.receipt_long_outlined,
         () => new HiredTransactions()),

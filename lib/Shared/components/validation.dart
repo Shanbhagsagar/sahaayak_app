@@ -104,5 +104,12 @@
      return null;
    }
 
-
+  static locAddressValidation(value){
+    int raw = value.toString().trim().length;
+    if(raw<=6){
+      return 'Please enter address';
+    }
+    return null;
+  }
+  
  }

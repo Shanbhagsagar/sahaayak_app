@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:sahaayak_app/Housekeeper/screens/BookServices.dart';
+import 'package:sahaayak_app/Housekeeper/screens/ServiceRequest.dart';
 import 'package:sahaayak_app/Housekeeper/components/DashboardMainContent.dart';
 
 class Dashboard extends StatelessWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  const Dashboard(this.huid,{Key? key}) : super(key: key);
+  final String? huid;
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +17,10 @@ class Dashboard extends StatelessWidget {
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute<void>(
-              builder: (BuildContext context) => BookServices(),
+              builder: (BuildContext context) => ServiceRequest(huid),
               fullscreenDialog: true,
             )),
-        icon: Icon(Icons.bookmark_add_outlined),
+        icon: Icon(Icons.bookmarks_outlined),
       ),
       body: DashboardMainContent(),
     );
