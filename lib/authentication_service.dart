@@ -110,13 +110,17 @@ Future<void> requestSetup(String id, Map<String, dynamic> requestData) async {
   req.doc(id).set(requestData);
 }
 
-Future<void> serviceSetup(String id, Map<String, dynamic> serviceData) async {
+Future<void> serviceSetup(String id, Map<String, dynamic> serviceData,String date) async {
   CollectionReference seq = FirebaseFirestore.instance.collection('Services');
+  serviceData.update('serviceId', (value) => id);
+  serviceData.update('bookingDate', (value) => date);
+  serviceData.update('paid', (value) => true);
   seq.doc(id).set(serviceData);
 }
 
 Future<void> paymentSetup(String id, Map<String, dynamic> paymentData) async {
   CollectionReference peq = FirebaseFirestore.instance.collection('Payments');
+  paymentData.update('paid', (value) => true);
   peq.doc(id).set(paymentData);
 }
 

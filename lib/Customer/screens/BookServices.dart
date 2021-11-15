@@ -532,6 +532,10 @@ class _BookServicesState extends State<BookServices> {
                             ),
                             onPressed: () async {
                               try {
+                                FocusScopeNode currentFocus =
+                                FocusScope.of(context);
+                                currentFocus.unfocus();
+
                                 if (_formKey.currentState!.validate()) {
                                   String serviceArray = "";
                                   String gender = selectedRadioTile.isOdd
@@ -545,6 +549,8 @@ class _BookServicesState extends State<BookServices> {
                                   Map<String, dynamic> requestData = {
                                     "requestID": id,
                                     "customerID": widget.custUID,
+                                    'serviceId': null,
+                                    'bookingDate': null,
                                     "customerName": widget.displayName,
                                     "customerAddress": _addressController.text,
                                     "housekeeperID": null,
@@ -560,7 +566,7 @@ class _BookServicesState extends State<BookServices> {
                                     "time": "${_time.hour}:${_time.minute}",
                                     "price": _payPrice,
                                     "accepted": false,
-                                    "paid" : false
+                                    "paid" : null,
                                   };
 
                                   print(requestData);
@@ -570,12 +576,6 @@ class _BookServicesState extends State<BookServices> {
                                     print('//RequestSetup Done');
                                   });
 
-                                  Stream<DocumentSnapshot<Map<String, dynamic>>>
-                                      reqDocStream = FirebaseFirestore.instance
-                                          .collection('Requests')
-                                          .doc(id)
-                                          .snapshots();
-
                                   showModalBottomSheet<void>(
                                     isDismissible: false,
                                     enableDrag: false,
@@ -584,7 +584,10 @@ class _BookServicesState extends State<BookServices> {
                                       return StreamBuilder<
                                               DocumentSnapshot<
                                                   Map<String, dynamic>>>(
-                                          stream: reqDocStream,
+                                          stream: FirebaseFirestore.instance
+                                              .collection('Requests')
+                                              .doc(id)
+                                              .snapshots(),
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.active) {
@@ -605,7 +608,7 @@ class _BookServicesState extends State<BookServices> {
                                                     Navigator.push(
                                                         context,
                                                         MaterialPageRoute<void>(
-                                                          builder: (BuildContext context) => PaymentScreen(widget.displayName,requestMap),
+                                                          builder: (BuildContext context) => PaymentScreen(requestMap),
                                                           fullscreenDialog: true,
                                                         ));
                                                   });

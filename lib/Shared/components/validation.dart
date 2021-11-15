@@ -79,7 +79,6 @@
 
    static profileTypeValidation(value) {
      String raw = value.toString().trim();
-     print('Raw it is $raw');
      if (raw == 'null') {
        return 'Please Enter Profile Type';
      }
@@ -88,7 +87,6 @@
 
    static genderValidation(value) {
      String raw = value.toString().trim();
-     print('Raw it is $raw');
      if (raw == 'null') {
        return 'Please Enter Gender';
      }
@@ -97,7 +95,6 @@
 
    static locCityValidation(value){
      String raw = value.toString().trim();
-     print('Raw it is $raw');
      if(raw=='null'){
        return 'Please enter city';
      }
