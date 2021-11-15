@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  // final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   AuthenticationService(this._firebaseAuth);
 
@@ -107,19 +107,16 @@ Future<void> userSetup(
 
 Future<void> requestSetup(String id, Map<String, dynamic> requestData) async {
   CollectionReference req = FirebaseFirestore.instance.collection('Requests');
-  FirebaseAuth auth = FirebaseAuth.instance;
   req.doc(id).set(requestData);
 }
 
 Future<void> serviceSetup(String id, Map<String, dynamic> serviceData) async {
   CollectionReference seq = FirebaseFirestore.instance.collection('Services');
-  FirebaseAuth auth = FirebaseAuth.instance;
   seq.doc(id).set(serviceData);
 }
 
 Future<void> paymentSetup(String id, Map<String, dynamic> paymentData) async {
   CollectionReference peq = FirebaseFirestore.instance.collection('Payments');
-  FirebaseAuth auth = FirebaseAuth.instance;
   peq.doc(id).set(paymentData);
 }
 

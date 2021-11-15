@@ -10,7 +10,6 @@ import 'package:provider/src/provider.dart';
 import 'package:sahaayak_app/Shared/components/validation.dart';
 import 'package:sahaayak_app/Shared/screens/LoginPage.dart';
 import 'package:sahaayak_app/constants.dart';
-import 'package:sahaayak_app/Shared/components/RoundedInputField.dart';
 import 'package:sahaayak_app/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
@@ -233,7 +232,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           FilteringTextInputFormatter.singleLineFormatter
                         ],
                         validator: (value) {
-                          return Validation.nameValidation(value);
+                          return Validation.nameValidation(_nameController.text);
                         },
                       ),
                     ),
@@ -422,7 +421,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       FilteringTextInputFormatter.singleLineFormatter
                     ],
                     validator: (value) {
-                      return Validation.phoneValidation(value);
+                      return Validation.phoneValidation(_phoneController.text);
                     },
                   ),
                 ),
@@ -472,7 +471,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           FilteringTextInputFormatter.singleLineFormatter
                         ],
                         validator: (value) {
-                          return Validation.adhaarValidation(value);
+                          return Validation.adhaarValidation(_adhaarController.text);
                         },
                       ),
                     ),
@@ -497,7 +496,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           keyboardType: TextInputType.emailAddress,
                           decoration: kInputEmailDecoration,
                           validator: (value) {
-                            return Validation.emailValidation(value);
+                            return Validation.emailValidation(_emailController.text);
                           },
                           autovalidateMode:
                           AutovalidateMode.onUserInteraction),
@@ -561,7 +560,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         //   FilteringTextInputFormatter.singleLineFormatter
                         // ],
                         validator: (value) {
-                          return Validation.passwordValidation(value);
+                          return Validation.passwordValidation(_passwordController.text);
                         },
                       ),
                     ),

@@ -17,40 +17,12 @@ class DashboardMainContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height/1.17,
         decoration: kBackgroundBoxDecoration,
         child: Padding(
           padding: const EdgeInsets.all(5.0),
           child: Column(
             children: [
-              SizedBox(
-                height: 20.0,
-              ),
-              Flexible(
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    aspectRatio: 2.0,
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                    autoPlay: true,
-                  ),
-                  items: imgList
-                      .map((item) => Container(
-                            child: Container(
-                              margin: EdgeInsets.all(5.0),
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5.0)),
-                                child: Image.asset(item,
-                                    fit: BoxFit.cover,
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height),
-                              ),
-                            ),
-                          ))
-                      .toList(),
-                ),
-              ),
               SizedBox(
                 height: 20.0,
               ),
