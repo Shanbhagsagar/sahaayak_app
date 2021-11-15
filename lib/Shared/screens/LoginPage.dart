@@ -172,10 +172,13 @@ class _LoginPageState extends State<LoginPage> {
                                 TextStyle(fontFamily: 'Ruluko', fontSize: 20),
                             shadowColor: Colors.black),
                         onPressed: () {
-                          context.read<AuthenticationService>().signIn(
-                                email: _emailController.text.trim(),
-                                password: _passwordController.text.trim(),
-                              );
+
+                          if(_formKey.currentState!.validate()) {
+                            context.read<AuthenticationService>().signIn(
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                            );
+                          }
                         },
                         child: const Text('Submit'),
                       ),

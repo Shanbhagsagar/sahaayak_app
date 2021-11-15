@@ -112,4 +112,39 @@
     return null;
   }
   
+
+
+ static cardNoValidation(value){
+   int raw = value.toString().trim().length;
+   if(raw < 16){
+     return 'Please Enter Valid Card Number';
+   }
+   return null;
+ }
+
+ static cvvValidation(value){
+   int raw = value.toString().trim().length;
+   if(raw < 3){
+     return 'Please Enter Valid CVV';
+   }
+   return null;
+ }
+
+   static expiryValidation(value){
+     int raw = value.toString().trim().length;
+     if(raw < 5){
+       return 'Please Enter Valid Expiry Date';
+     }
+     return null;
+   }
+
+
+   static cardNameValidation(value){
+     int raw = value.toString().trim().length;
+     if(raw < 6 ){
+       return 'Please Enter Valid Name';
+     }
+     return null;
+   }
+
  }

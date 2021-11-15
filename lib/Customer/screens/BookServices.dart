@@ -560,6 +560,7 @@ class _BookServicesState extends State<BookServices> {
                                     "time": "${_time.hour}:${_time.minute}",
                                     "price": _payPrice,
                                     "accepted": false,
+                                    "paid" : false
                                   };
 
                                   print(requestData);
@@ -640,11 +641,13 @@ class _BookServicesState extends State<BookServices> {
                                                                       Widget>[
                                                                     const Center(
                                                                       child:
-                                                                          CircularProgressIndicator(),
+                                                                          CircularProgressIndicator(
+                                                                            color: Colors.yellowAccent,
+                                                                          ),
                                                                     ),
                                                                     SizedBox(
                                                                       height:
-                                                                          15,
+                                                                          30,
                                                                     ),
                                                                     const Text(
                                                                       'Waiting for a Saahayak to accept the request',
@@ -691,15 +694,20 @@ class _BookServicesState extends State<BookServices> {
                                                                   mainAxisSize:
                                                                       MainAxisSize
                                                                           .min,
-                                                                  children: <
-                                                                      Widget>[
-                                                                    Center(child: Icon(Icons.thumb_up,color: Colors.green.shade900,)),
+                                                                  children: <Widget>[
+                                                                   Center(
+                                                                       child: Icon(
+                                                                          Icons.check_circle_outline,
+                                                                          color: Colors.green.shade700,
+                                                                          size: 40,
+                                                                    )
+                                                                    ),
                                                                     SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
                                                                     const Text(
-                                                                      'A Saahayak has accepted your request',
+                                                                      'Saahayak has accepted your request',
                                                                       style:
                                                                           TextStyle(
                                                                         fontSize:
@@ -716,7 +724,7 @@ class _BookServicesState extends State<BookServices> {
                                                                     ),
                                                                     Center(
                                                                       child: const Text(
-                                                                        'Redirecting',
+                                                                        'Redirecting....',
                                                                         style:
                                                                         TextStyle(
                                                                           fontSize:

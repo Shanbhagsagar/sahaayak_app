@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nanoid/nanoid.dart';
 import 'package:sahaayak_app/Shared/components/validation.dart';
 import 'package:intl/intl.dart';
 
+import '../../authentication_service.dart';
 import '../../constants.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -45,16 +47,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   SizedBox(
                     height: 15.0,
                   ),
-                  Text(
-                    'Hi ${widget.displayName!.split(' ')[0]},',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 22.0,
-                        fontFamily: kFontFamily1,
-                        fontWeight: FontWeight.bold),),
-                  Text(
-                    '${widget.requestMap['customerAddress']}',
-                    textAlign: TextAlign.left,
+                  Text('Service ID : # $id',
                     style: TextStyle(
                         fontSize: 22.0,
                         fontFamily: kFontFamily1,
@@ -62,11 +55,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   SizedBox(
                     height: 15.0,
                   ),
-                  Text('Service ID $id',
-                style: TextStyle(
-                fontSize: 18.0,
-                    fontFamily: kFontFamily1,
-                    fontWeight: FontWeight.bold),),
+                  Center(
+                    child: Text(
+                      'Hi ${widget.displayName!.split(' ')[0]},',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontSize: 22.0,
+                          fontFamily: kFontFamily1,
+                          fontWeight: FontWeight.bold),),
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Text(
+                    'Please complete the payment process',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: kFontFamily1,
+                        fontWeight: FontWeight.bold),),
                   SizedBox(
                     height: 40.0,
                   ),
@@ -74,11 +81,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     maxLength: 16,
                     controller: _cardNoController,
                     validator: (value) {
-                      return Validation.locAddressValidation(
+                      return Validation.cardNoValidation(
                           _cardNoController.text);
                     },
                     style: TextStyle(
-                      fontFamily: kFontFamily1,
+                       fontFamily: kFontFamily1,
                       color: HexColor("#01274a"),
                       fontWeight: FontWeight.bold,
                     ),
@@ -97,7 +104,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     maxLength: 3,
                     controller: _cvvController,
                     validator: (value) {
-                      return Validation.locAddressValidation(
+                      return Validation.cvvValidation(
                           _cvvController.text);
                     },
                     style: TextStyle(
@@ -116,10 +123,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     height: 15.0,
                   ),
                   TextFormField(
-                    maxLength: 4,
+                    maxLength: 5,
                     controller: _expiryController,
                     validator: (value) {
-                      return Validation.locAddressValidation(
+                      return Validation.expiryValidation(
                           _expiryController.text);
                     },
                     style: TextStyle(
@@ -142,7 +149,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     maxLength: 20,
                     controller: _cardNameController,
                     validator: (value) {
-                      return Validation.locAddressValidation(
+                      return Validation.cardNameValidation(
                           _cardNameController.text);
                     },
                     style: TextStyle(
@@ -159,7 +166,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     autovalidateMode: AutovalidateMode.disabled,
                   ),
                   SizedBox(
-                    height: 40.0,
+                    height: 20.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
@@ -168,9 +175,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         constraints: BoxConstraints.tightForFinite(
                             height: 40.0, width: double.maxFinite),
                         child: ElevatedButton(
-                            child: Text("Pay ${NumberFormat.simpleCurrency(name: 'INR', decimalDigits: 0).format(widget.requestMap['price'])}",
+                            child: Text("Pay  ${NumberFormat.simpleCurrency(name: 'INR', decimalDigits: 0).format(widget.requestMap['price'])}",
                                 style: TextStyle(
-                                    fontSize: 20.0, fontFamily: kFontFamily1)),
+                                    fontSize: 20.0, fontFamily: kFontFamily1, color: Colors.white,fontWeight: FontWeight.bold)),
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   Colors.black),
@@ -179,6 +186,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             ),
                             onPressed: () async {
                               try {
+                                serviceSetup(id,widget.requestMap);
+                                CollectionReference services = FirebaseFirestore.instance.collection('Services');
+                                services.doc(id).set({
+                                  'serviceId': id,
+                                });
+                                services.doc(id).update({
+                                  'paid': true
+                                });
                               } catch (Ex) {
                                 print(Ex);
                               }
