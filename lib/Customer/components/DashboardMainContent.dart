@@ -13,8 +13,9 @@ final List<String> imgList = [
 ];
 
 class DashboardMainContent extends StatefulWidget {
-  DashboardMainContent(this.muid);
+  DashboardMainContent(this.muid,this.phoneNumber);
   final String? muid;
+  final String? phoneNumber;
 
   @override
   State<DashboardMainContent> createState() => _DashboardMainContentState();
@@ -76,7 +77,7 @@ class _DashboardMainContentState extends State<DashboardMainContent> {
               SizedBox(
                 height: 10.0,
               ),
-              Expanded(child:ActiveServiceCard(widget.muid)),
+              Expanded(child:ActiveServiceCard(widget.muid,widget.phoneNumber)),
             ],
           ),
         ),

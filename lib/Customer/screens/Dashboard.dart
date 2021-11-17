@@ -25,7 +25,7 @@ class Dashboard extends StatelessWidget {
             )),
         icon: Icon(Icons.bookmark_add_outlined),
       ),
-      body: DashboardMainContent(muid),
+      body: DashboardMainContent(muid,phoneNumber),
     );
   }
 }

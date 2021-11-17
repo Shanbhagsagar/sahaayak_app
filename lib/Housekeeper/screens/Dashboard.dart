@@ -24,7 +24,7 @@ class Dashboard extends StatelessWidget {
             )),
         icon: Icon(Icons.bookmarks_outlined),
       ),
-      body: DashboardMainContent(),
+      body: DashboardMainContent(huid,phoneNumber),
     );
   }
 }

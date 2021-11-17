@@ -12,16 +12,27 @@ final List<String> imgList = [
   'images/ad4.png'
 ];
 
-class DashboardMainContent extends StatelessWidget {
+class DashboardMainContent extends StatefulWidget {
+  DashboardMainContent(this.huid,this.phoneNumber);
+  final String? huid;
+  final String? phoneNumber;
+
+  @override
+  State<DashboardMainContent> createState() => _DashboardMainContentState();
+}
+
+class _DashboardMainContentState extends State<DashboardMainContent> {
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        height: MediaQuery.of(context).size.height/1.17,
+        height: MediaQuery.of(context).size.height*1,
         decoration: kBackgroundBoxDecoration,
         child: Padding(
           padding: const EdgeInsets.all(5.0),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
                 height: 20.0,
@@ -36,13 +47,16 @@ class DashboardMainContent extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 30.0,
+                height: 10.0,
               ),
-              Center(child: ActiveServiceCard()),
+              SizedBox(height: MediaQuery.of(context).size.height.toDouble()/1.35,
+                  child: ActiveServiceCard(widget.huid,widget.phoneNumber)),
             ],
           ),
         ),
       ),
     );
   }
+
+
 }

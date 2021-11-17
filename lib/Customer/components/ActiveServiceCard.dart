@@ -7,10 +7,11 @@ import 'package:sahaayak_app/Housekeeper/components/RequestCard.dart';
 
 class ActiveServiceCard extends StatelessWidget {
   const ActiveServiceCard(
-    this.muid, {
+    this.muid,this.phoneNumber, {
     Key? key,
   }) : super(key: key);
   final String? muid;
+  final String? phoneNumber;
 
   @override
   Widget build(BuildContext context) {
