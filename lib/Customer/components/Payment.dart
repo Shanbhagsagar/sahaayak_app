@@ -231,7 +231,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
                                     paymentSetup(transID, paymentMap);
                                     serviceSetup(
-                                        serviceID, widget.requestMap, now);
+                                        serviceID, widget.requestMap, now,transID);
 
                                     showModalBottomSheet(
                                         enableDrag: false,

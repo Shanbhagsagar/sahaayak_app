@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sahaayak_app/Customer/components/PhotoHero.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:sahaayak_app/constants.dart';
@@ -17,6 +16,7 @@ class ActiveServiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     int today = int.parse('${DateTime.now().month}'+'${DateTime.now().day}');
     print(today);
+
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance
             .collection('Services')

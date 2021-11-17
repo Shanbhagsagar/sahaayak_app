@@ -11,10 +11,11 @@ import 'package:sahaayak_app/authentication_service.dart';
 import 'package:sahaayak_app/constants.dart';
 
 class BookServices extends StatefulWidget {
-  const BookServices(this.custUID, this.displayName);
+  const BookServices(this.custUID, this.displayName, this.phoneNumber);
 
   final String? custUID;
   final String? displayName;
+  final String? phoneNumber;
 
   @override
   _BookServicesState createState() => _BookServicesState();
@@ -549,6 +550,11 @@ class _BookServicesState extends State<BookServices> {
                                   _serviceList.forEach((key, value) {
                                     if (value == true) serviceArray += ",$key";
                                   });
+                                  String fromDateDay = mFormat.format(double.parse(_date.start.day.toString()));
+                                  String fromDateMonth = mFormat.format(double.parse(_date.start.month.toString()));
+                                  String toDateDay = mFormat.format(double.parse(_date.end.day.toString()));
+                                  String toDateMonth = mFormat.format(double.parse(_date.end.month.toString()));
+
                                   print('MAP START');
                                   Map<String, dynamic> requestData = {
                                     "requestID": id,
@@ -563,17 +569,18 @@ class _BookServicesState extends State<BookServices> {
                                     "services": serviceArray.substring(1),
                                     "days": _payDays,
                                     "fromDate":
-                                        _date.start.day<10?
-                                          DateTime.parse('${_date.start.year}-${_date.start.month}-${mFormat.format(double.parse(_date.start.day.toString()))}'):
-                                          DateTime.parse('${_date.start.year}-${_date.start.month}-${_date.start.day}'),
+                                          DateTime.parse('${_date.start.year}-$fromDateMonth-$fromDateDay'),
                                     "toDate": _payDays == 1
-                                        ? DateTime.parse('${_date.start.year}-${_date.start.month}-${_date.start.day}')
-                                        : DateTime.parse('${_date.end.year}-${_date.end.month}-${_date.end.day}'),
-                                    "fromDateInt": int.parse('${_date.start.month}'+'${_date.start.day}'),
-                                    "toDateInt": _payDays == 1? int.parse('${_date.start.month}'+'${_date.start.day}'):int.parse('${_date.end.month}'+'${_date.start.day}'),
+                                        ? DateTime.parse('${_date.start.year}-$fromDateMonth-$fromDateDay')
+                                        : DateTime.parse('${_date.end.year}-$toDateMonth-$toDateDay'),
+                                    "fromDateInt": int.parse('$fromDateMonth'+'$fromDateDay'),
+                                    "toDateInt": _payDays == 1?
+                                    int.parse('$fromDateMonth'+'$fromDateDay')
+                                        :int.parse('$toDateMonth'+'$toDateDay'),
                                     "time": "${_time.hour}:${_time.minute}",
                                     "price": _payPrice,
                                     "accepted": false,
+                                    "customerPhone": widget.phoneNumber,
                                     "paid" : null,
                                   };
                                   print('MAP END');

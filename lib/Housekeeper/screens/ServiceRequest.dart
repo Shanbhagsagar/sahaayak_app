@@ -4,9 +4,10 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:sahaayak_app/Housekeeper/components/RequestServiceCard.dart';
 
 class ServiceRequest extends StatefulWidget {
-  const ServiceRequest(this.huid,this.hname,{Key? key}) : super(key: key);
+  const ServiceRequest(this.huid,this.hname,this.phoneNumber,{Key? key}) : super(key: key);
   final String? huid;
   final String? hname;
+  final String? phoneNumber;
 
   @override
   _ServiceRequestState createState() => _ServiceRequestState();
@@ -36,7 +37,7 @@ class _ServiceRequestState extends State<ServiceRequest> {
         child: Center(
           child: Container(
             width: 320,
-            child: RequestServiceCard(widget.huid,widget.hname),
+            child: RequestServiceCard(widget.huid,widget.hname,widget.phoneNumber),
           ),
         ),
       ),

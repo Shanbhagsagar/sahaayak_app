@@ -112,12 +112,12 @@ Future<void> requestSetup(String id, Map<String, dynamic> requestData) async {
   req.doc(id).set(requestData);
 }
 
-Future<void> serviceSetup(String id, Map<String, dynamic> serviceData,DateTime date) async {
+Future<void> serviceSetup(String id, Map<String, dynamic> serviceData,DateTime date,String transID) async {
   CollectionReference seq = FirebaseFirestore.instance.collection('Services');
   serviceData.update('serviceId', (value) => id);
   serviceData.update('bookingDate', (value) => date);
   serviceData.update('paid', (value) => true);
-  serviceData.addAll({'attendance':0,'attendanceDate':null});
+  serviceData.addAll({'attendance':0,'attendanceDate':null,'transID':transID});
   seq.doc(id).set(serviceData);
 }
 
@@ -127,13 +127,13 @@ Future<void> paymentSetup(String id, Map<String, dynamic> paymentData) async {
   peq.doc(id).set(paymentData);
 }
 
-Future<bool> requestAcceptance(Map<String, dynamic> requestMap, String? huid,String? hname) async {
+Future<bool> requestAcceptance(Map<String, dynamic> requestMap, String? huid,String? hname,String? phoneNumber) async {
   CollectionReference req = FirebaseFirestore.instance.collection('Requests');
   print('inside requestAccepted');
   print(requestMap);
   requestMap.update('accepted', (value) => true);
   requestMap.update('housekeeperID', (value) => huid);
-  requestMap.addAll({'housekeeperName':hname});
+  requestMap.addAll({'housekeeperName':hname,'housekeeperPhone':phoneNumber});
   req.doc(requestMap['requestID'].toString()).update(requestMap).onError((error, stackTrace) {
     print('requestAcceptance error');
     return false;

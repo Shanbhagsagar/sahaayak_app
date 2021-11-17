@@ -71,9 +71,9 @@ class AuthenticationWrapper extends StatelessWidget {
 
               if (profileType == 'Customer') {
                 print(userDocument['displayName']);
-                return new MainMenu(userDocument['displayName'], user.uid);
+                return new MainMenu(userDocument['displayName'], user.uid,user.phoneNumber);
               } else {
-                return new HMainMenu(userDocument['displayName'], user.uid);
+                return new HMainMenu(userDocument['displayName'], user.uid,user.phoneNumber);
               }
             } else {
               return Material(
