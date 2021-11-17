@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:sahaayak_app/Housekeeper/components/RequestCard.dart';
 
 class RequestServiceCard extends StatelessWidget {
-  const RequestServiceCard(this.huid, {
+  const RequestServiceCard(this.huid,this.hname,{
     Key? key,
   }) : super(key: key);
   final String? huid;
+  final String? hname;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: new EdgeInsets.all(5.0),
       child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance.collection('Requests').snapshots(),
+          stream: FirebaseFirestore.instance.collection('Requests').where('accepted',isEqualTo: false).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               Map<String, dynamic> requestMap = {};
@@ -24,14 +25,11 @@ class RequestServiceCard extends StatelessWidget {
               });
               List<String> requestMapKeys = requestMap.keys.toList();
 
-              print('//CLEAR');
               try {
                 print(requestMap[requestMapKeys[0]]);
               } catch (e, s) {
                 return Center(child: Text('- - No service request found - -'));
               }
-
-
               return ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -39,10 +37,7 @@ class RequestServiceCard extends StatelessWidget {
                 itemCount: requestMap.length,
                 itemBuilder: (context, index) {
                     print(index);
-                    if(requestMap[requestMapKeys[index]]['accepted']==false)
-                    return RequestCard(requestMapKeys, requestMap, index,huid);
-                    else
-                    return SizedBox(height: 0,);
+                    return RequestCard(requestMapKeys, requestMap, index,huid,hname);
                 },
               );
             }

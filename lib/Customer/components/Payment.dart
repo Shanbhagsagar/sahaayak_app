@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nanoid/nanoid.dart';
+import 'package:sahaayak_app/Customer/screens/Dashboard.dart';
 import 'package:sahaayak_app/Shared/components/validation.dart';
 import 'package:intl/intl.dart';
+import 'package:sahaayak_app/Shared/screens/LoginPage.dart';
 
 import '../../authentication_service.dart';
 import '../../constants.dart';
@@ -208,36 +210,46 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         FocusScope.of(context);
                                     currentFocus.unfocus();
 
-                                    var now = new DateTime.now();
-                                    var formatter =
-                                        new DateFormat('yyyy-MM-dd');
-                                    String today = formatter.format(now);
+                                    DateTime now = new DateTime.now();
+                                    DateFormat formatter = new DateFormat('yyyy-MM-dd');
+
                                     Map<String, dynamic> paymentMap = {
                                       "transID": transID,
                                       "serviceID": serviceID,
                                       "requestID":
                                           widget.requestMap['requestID'],
+                                      "customerName":widget.requestMap['customerName'],
+                                      "housekeeperName":widget.requestMap['housekeeperName'],
                                       "customerID":
                                           widget.requestMap['customerID'],
                                       "housekeeperID":
                                           widget.requestMap['housekeeperID'],
                                       "amount": widget.requestMap['price'],
-                                      "bookingDate": today,
+                                      "bookingDate": now,
                                       "paid": null,
                                     };
 
                                     paymentSetup(transID, paymentMap);
                                     serviceSetup(
-                                        serviceID, widget.requestMap, today);
+                                        serviceID, widget.requestMap, now);
 
                                     showModalBottomSheet(
-                                        isDismissible: false,
                                         enableDrag: false,
                                         context: context,
                                         builder: (BuildContext context) {
-                                          Timer(Duration(seconds: 2), (){
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
+                                          WidgetsBinding.instance!.addPostFrameCallback((_) {
+                                            Navigator.of(context).pop();
+                                            Navigator.of(context).pop();
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                "Payment done",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.TOP,
+                                                timeInSecForIosWeb: 4,
+                                                backgroundColor: Colors.black,
+                                                textColor: Colors.white,
+                                                fontSize: 10.0
+                                            );
                                           });
                                           return Container(
                                             height: 200,

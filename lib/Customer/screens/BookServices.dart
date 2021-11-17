@@ -531,6 +531,10 @@ class _BookServicesState extends State<BookServices> {
                                   HexColor("#01274a")),
                             ),
                             onPressed: () async {
+                             // print('0${_date.start.day}');
+
+                              NumberFormat mFormat= new NumberFormat("00");
+
                               try {
                                 FocusScopeNode currentFocus =
                                 FocusScope.of(context);
@@ -545,7 +549,7 @@ class _BookServicesState extends State<BookServices> {
                                   _serviceList.forEach((key, value) {
                                     if (value == true) serviceArray += ",$key";
                                   });
-
+                                  print('MAP START');
                                   Map<String, dynamic> requestData = {
                                     "requestID": id,
                                     "customerID": widget.custUID,
@@ -559,16 +563,20 @@ class _BookServicesState extends State<BookServices> {
                                     "services": serviceArray.substring(1),
                                     "days": _payDays,
                                     "fromDate":
-                                        '${_date.start.year}-${_date.start.month}-${_date.start.day}',
+                                        _date.start.day<10?
+                                          DateTime.parse('${_date.start.year}-${_date.start.month}-${mFormat.format(double.parse(_date.start.day.toString()))}'):
+                                          DateTime.parse('${_date.start.year}-${_date.start.month}-${_date.start.day}'),
                                     "toDate": _payDays == 1
-                                        ? '${_date.start.year}-${_date.start.month}-${_date.start.day}'
-                                        : '${_date.end.year}-${_date.end.month}-${_date.end.day}',
+                                        ? DateTime.parse('${_date.start.year}-${_date.start.month}-${_date.start.day}')
+                                        : DateTime.parse('${_date.end.year}-${_date.end.month}-${_date.end.day}'),
+                                    "fromDateInt": int.parse('${_date.start.month}'+'${_date.start.day}'),
+                                    "toDateInt": _payDays == 1? int.parse('${_date.start.month}'+'${_date.start.day}'):int.parse('${_date.end.month}'+'${_date.start.day}'),
                                     "time": "${_time.hour}:${_time.minute}",
                                     "price": _payPrice,
                                     "accepted": false,
                                     "paid" : null,
                                   };
-
+                                  print('MAP END');
                                   print(requestData);
 
                                   requestSetup(id, requestData)
@@ -767,6 +775,7 @@ class _BookServicesState extends State<BookServices> {
                               } catch (Ex) {
                                 print("##########BookService#########");
                                 print(Ex);
+
                               }
                             }),
                       ),

@@ -5,8 +5,9 @@ import 'package:sahaayak_app/Housekeeper/screens/ServiceRequest.dart';
 import 'package:sahaayak_app/Housekeeper/components/DashboardMainContent.dart';
 
 class Dashboard extends StatelessWidget {
-  const Dashboard(this.huid,{Key? key}) : super(key: key);
+  const Dashboard(this.huid,this.hname,{Key? key}) : super(key: key);
   final String? huid;
+  final String? hname;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class Dashboard extends StatelessWidget {
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute<void>(
-              builder: (BuildContext context) => ServiceRequest(huid),
+              builder: (BuildContext context) => ServiceRequest(huid,hname),
               fullscreenDialog: true,
             )),
         icon: Icon(Icons.bookmarks_outlined),

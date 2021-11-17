@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sahaayak_app/authentication_service.dart';
 import 'package:sahaayak_app/constants.dart';
@@ -5,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class RequestCard extends StatelessWidget {
-  const RequestCard(this.requestMapKeys, this.requestMap, this.requestIndex, this.huid);
+  const RequestCard(this.requestMapKeys, this.requestMap, this.requestIndex, this.huid,this.hname);
 
   final Map<String, dynamic> requestMap;
   final int requestIndex;
   final List<String> requestMapKeys;
   final String? huid;
+  final String? hname;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,11 @@ class RequestCard extends StatelessWidget {
         .toString()
         .trim()
         .split(',');
+
+    DateFormat formatter = DateFormat('MMMd');
+    DateTime fromDt = (requestMap[requestMapKeys[requestIndex]]['fromDate'] as Timestamp).toDate();
+    DateTime toDt = (requestMap[requestMapKeys[requestIndex]]['toDate'] as Timestamp).toDate();
+
     return Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
@@ -45,12 +52,15 @@ class RequestCard extends StatelessWidget {
                 requestMap[requestMapKeys[requestIndex]]['customerAddress']),
             CardServiceDisplay(Icons.location_city,
                 requestMap[requestMapKeys[requestIndex]]['city']),
+            requestMap[requestMapKeys[requestIndex]]['days']==1?
             CardServiceDisplay(Icons.today,
-                'From ${requestMap[requestMapKeys[requestIndex]]['fromDate']}\nTo ${requestMap[requestMapKeys[requestIndex]]['toDate']}'),
+                'On ${formatter.format(fromDt)}'):
+            CardServiceDisplay(Icons.today,
+                'From ${formatter.format(fromDt)} To ${formatter.format(toDt)}'),
             CardServiceDisplay(Icons.schedule,
                 requestMap[requestMapKeys[requestIndex]]['time']),
             CardServiceDisplay(Icons.work,
-                '${requestMap[requestMapKeys[requestIndex]]['days'].toString()} days'),
+                '${requestMap[requestMapKeys[requestIndex]]['days']} days'),
             Padding(
               padding: EdgeInsets.only(left: 16.0),
               child: Row(
@@ -66,16 +76,6 @@ class RequestCard extends StatelessWidget {
                   Expanded(
                     child: SizedBox(
                       height: 50,
-                      // child: ListView(
-                      //   scrollDirection: Axis.horizontal,
-                      //   children: [
-                      //     ServiceChip("Standard Cleaning"),
-                      //     ServiceChip("Premium Cleaning"),
-                      //     ServiceChip("Elderly Care"),
-                      //     ServiceChip("Child Care"),
-                      //     ServiceChip("Cooking"),
-                      //   ],
-                      // ),
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: serviceChips.length,
@@ -127,7 +127,7 @@ class RequestCard extends StatelessWidget {
                     onPressed: () {
                       print('inside Card');
                       print(requestMap[requestMapKeys[requestIndex]]);
-                      print('request acceptance success = ${requestAcceptance(requestMap[requestMapKeys[requestIndex]],huid)}');
+                      print('request acceptance success = ${requestAcceptance(requestMap[requestMapKeys[requestIndex]],huid,hname)}');
                     },
                   ),
                 ),

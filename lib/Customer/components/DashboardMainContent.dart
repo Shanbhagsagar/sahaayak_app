@@ -13,6 +13,9 @@ final List<String> imgList = [
 ];
 
 class DashboardMainContent extends StatefulWidget {
+  DashboardMainContent(this.muid);
+  final String? muid;
+
   @override
   State<DashboardMainContent> createState() => _DashboardMainContentState();
 }
@@ -23,11 +26,12 @@ class _DashboardMainContentState extends State<DashboardMainContent> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height*1,
         decoration: kBackgroundBoxDecoration,
         child: Padding(
           padding: const EdgeInsets.all(5.0),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
                 height: 20.0,
@@ -70,9 +74,9 @@ class _DashboardMainContentState extends State<DashboardMainContent> {
                 ),
               ),
               SizedBox(
-                height: 30.0,
+                height: 10.0,
               ),
-              Center(child: ActiveServiceCard()),
+              Expanded(child:ActiveServiceCard(widget.muid)),
             ],
           ),
         ),

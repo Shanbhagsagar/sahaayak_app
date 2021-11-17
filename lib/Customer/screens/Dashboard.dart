@@ -24,7 +24,7 @@ class Dashboard extends StatelessWidget {
             )),
         icon: Icon(Icons.bookmark_add_outlined),
       ),
-      body: DashboardMainContent(),
+      body: DashboardMainContent(muid),
     );
   }
 }
