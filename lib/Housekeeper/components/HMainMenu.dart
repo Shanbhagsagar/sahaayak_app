@@ -13,7 +13,8 @@ class HMainMenu extends StatefulWidget {
   static const String id = 'hmain_menu';
   final String? displayName;
   final String? uid;
-  const HMainMenu (this.displayName,this.uid);
+  final String? phoneNumber;
+  const HMainMenu (this.displayName,this.uid,this.phoneNumber);
   @override
   _HMainMenuState createState() => _HMainMenuState();
 }
@@ -28,7 +29,7 @@ class _HMainMenuState extends State<HMainMenu> {
   initState() {
     super.initState();
 
-    _menuItems = createMenuItems(context,widget.uid,widget.displayName);
+    _menuItems = createMenuItems(context,widget.uid,widget.displayName,widget.phoneNumber);
     _selectedMenuItem = _menuItems.first;
     _appBarTitle = new Text(
       _menuItems.first.title,
@@ -144,9 +145,9 @@ class _HMainMenuState extends State<HMainMenu> {
   }
 }
 
-List<MenuItem> createMenuItems(BuildContext context,String? huid,String? hname) {
+List<MenuItem> createMenuItems(BuildContext context,String? huid,String? hname,String? phoneNumber) {
   final menuItems = [
-    new MenuItem("Dashboard", Icons.dashboard_outlined, () => new Dashboard(huid,hname)),
+    new MenuItem("Dashboard", Icons.dashboard_outlined, () => new Dashboard(huid,hname,phoneNumber)),
     //new MenuItem("Book Services", Icons.bookmark_add_outlined, () => new BookServices()),
     new MenuItem("Customers", Icons.receipt_long_outlined,
         () => new HiredTransactions(huid)),

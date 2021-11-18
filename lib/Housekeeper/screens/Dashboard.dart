@@ -5,9 +5,10 @@ import 'package:sahaayak_app/Housekeeper/screens/ServiceRequest.dart';
 import 'package:sahaayak_app/Housekeeper/components/DashboardMainContent.dart';
 
 class Dashboard extends StatelessWidget {
-  const Dashboard(this.huid,this.hname,{Key? key}) : super(key: key);
+  const Dashboard(this.huid,this.hname,this.phoneNumber,{Key? key}) : super(key: key);
   final String? huid;
   final String? hname;
+  final String? phoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +19,12 @@ class Dashboard extends StatelessWidget {
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute<void>(
-              builder: (BuildContext context) => ServiceRequest(huid,hname),
+              builder: (BuildContext context) => ServiceRequest(huid,hname,phoneNumber),
               fullscreenDialog: true,
             )),
         icon: Icon(Icons.bookmarks_outlined),
       ),
-      body: DashboardMainContent(),
+      body: DashboardMainContent(huid,phoneNumber),
     );
   }
 }

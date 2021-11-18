@@ -12,15 +12,17 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ActiveServiceCard extends StatelessWidget {
   const ActiveServiceCard(
-    this.muid, {
+    this.muid,this.phoneNumber, {
     Key? key,
   }) : super(key: key);
   final String? muid;
+  final String? phoneNumber;
 
   @override
   Widget build(BuildContext context) {
     int today = int.parse('${DateTime.now().month}'+'${DateTime.now().day}');
     print(today);
+
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance
             .collection('Services')
