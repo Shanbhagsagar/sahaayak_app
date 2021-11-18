@@ -22,10 +22,10 @@ class _PaymentHistoryState extends State<PaymentHistory> {
     return SingleChildScrollView(
       child: Container(
         padding: new EdgeInsets.all(5.0),
-        // height: MediaQuery
-        //     .of(context)
-        //     .size
-        //     .height,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height/1.15,
         decoration: kBackgroundBoxDecoration,
         child: StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
             stream:  FirebaseFirestore.instance.collection('Payments').where('customerID',isEqualTo: widget.muid).snapshots(),

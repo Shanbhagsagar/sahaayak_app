@@ -202,7 +202,7 @@ class ServiceCard extends StatelessWidget {
                                       side: BorderSide(
                                           color: HexColor("#01274a"))))),
                       onPressed: () {
-                        launch('tel:+91 981940379');
+                        launch('tel:+91 ${activeSMap['housekeeperPhone']}');
                       }),
                 ),
               ),
@@ -360,7 +360,9 @@ class ServiceCard extends StatelessWidget {
                                     bottomLeft: Radius.circular(18.0),
                                     bottomRight: Radius.circular(18.0)),
                                 side: BorderSide(color: Colors.red.shade900)))),
-                    onPressed: () => AlertDialog(
+                    onPressed: () =>showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
                       title: const Text('Alert'),
                       content: const Text('Are you sure you want to cancel the service? \n Note : If service is under current period  money will not be refunded'),
                       actions: <Widget>[
@@ -384,24 +386,15 @@ class ServiceCard extends StatelessWidget {
                             String day = mFormat.format(double.parse(DateTime.now().day.toString()));
                             int today = int.parse('$month'+'$day');
 
-                            String mMonth = mFormat.format(double.parse(
-                                (activeSMap['fromDateInt']
-                                as Timestamp)
-                                    .toDate()
-                                    .month
-                                    .toString()));
-                            String mDay = mFormat.format(double.parse(
-                                (activeSMap['fromDateInt']
-                                as Timestamp)
-                                    .toDate()
-                                    .day
-                                    .toString()));
-                            int mToday = int.parse('$mMonth' + '$mDay');
+
+                            int mToday =  activeSMap['fromDateInt'];
+
+                            print('WTF ?? $today $mToday');
 
                             if(today < mToday){
                               Map<String, dynamic> paymentMap = {
                                 "transID": transID,
-                                "serviceID": activeSMap['serviceId'],
+                                "serviceId": activeSMap['serviceId'],
                                 "requestID": activeSMap['requestID'],
                                 "customerName":activeSMap['customerName'],
                                 "housekeeperName":activeSMap['housekeeperName'],
@@ -413,7 +406,7 @@ class ServiceCard extends StatelessWidget {
                               };
 
                               payRefund(transID, paymentMap);
-                              deleteService(activeSMap['serviceID']);
+                              deleteService(activeSMap['serviceId']);
                               Fluttertoast.showToast(
                                   msg: "Service cancelled.Amount refunded successfully. ",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -425,7 +418,7 @@ class ServiceCard extends StatelessWidget {
                               Navigator.of(context).pop();
 
                             }else{
-                              deleteService(activeSMap['serviceID']);
+                              deleteService(activeSMap['serviceId']);
                               Fluttertoast.showToast(
                                   msg: "Service cancelled.",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -448,7 +441,8 @@ class ServiceCard extends StatelessWidget {
                           ),
                         ),
                       ],
-                    )),
+                    ))
+                ),
               ),
             ),
           ],

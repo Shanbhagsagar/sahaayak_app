@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sahaayak_app/Housekeeper/components/RequestCard.dart';
 import 'package:sahaayak_app/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ActiveServiceCard extends StatelessWidget {
   const ActiveServiceCard(this.huid,this.phoneNumber, {
@@ -194,7 +195,10 @@ class ServiceCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(18.0),
                                   side: BorderSide(
                                       color: HexColor("#01274a"))))),
-                      onPressed: () => null),
+                      onPressed: () {
+                      launch('tel:+91 ${activeSMap['customerPhone']}');
+                      }
+                  ),
                 ),
               ),
             ),

@@ -23,7 +23,7 @@ class _PaymentHistoryState extends State<PaymentHistory> {
         height: MediaQuery
             .of(context)
             .size
-            .height,
+            .height/1.15,
         decoration: kBackgroundBoxDecoration,
         child: StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
             stream:  FirebaseFirestore.instance.collection('Payments').where('housekeeperID',isEqualTo: widget.huid).snapshots(),
