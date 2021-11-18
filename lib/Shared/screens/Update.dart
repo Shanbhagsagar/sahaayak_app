@@ -47,7 +47,8 @@ class _UpdatePageState extends State<UpdatePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final filename = file != null ? basename(file!.path) : "No file Selected";
+    //final filename = file != null ? basename(file!.path) : "No file Selected";
+    print(widget.uid);
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance
             .collection('Users')
@@ -56,7 +57,7 @@ class _UpdatePageState extends State<UpdatePage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             dynamic userDoc = snapshot.data!.data();
-
+          print(userDoc);
             _nameController.text = userDoc['displayName'];
             _nameController.value =
                 _nameController.value.copyWith(text: userDoc['displayName']);
@@ -73,20 +74,22 @@ class _UpdatePageState extends State<UpdatePage> {
             _profileTypeController.value = _profileTypeController.value
                 .copyWith(text: userDoc['profileType']);
 
-            _adhaarController.text = userDoc['AdhaarID'];
-            _adhaarController.value =
-                _adhaarController.value.copyWith(text: userDoc['AdhaarID']);
+            if(userDoc['profileType'] == 'Sahaayak') {
+              _adhaarController.text = userDoc['AdhaarID'];
+              _adhaarController.value =
+                  _adhaarController.value.copyWith(text: userDoc['AdhaarID']);
 
-            genderDropDownVal = (userDoc['Gender']).toString();
-            cityDropDownVal = (userDoc['City']).toString();
-
+              genderDropDownVal = (userDoc['Gender']).toString();
+              cityDropDownVal = (userDoc['City']).toString();
+            }
             return SingleChildScrollView(
               child: Form(
                 key: _formUpdateKey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Container(
                   decoration: kBackgroundBoxDecoration,
-                  //  height: MediaQuery.of(context).size.height/1.12,
+                   height: _profileTypeController.text == 'Customer'
+                       ? MediaQuery.of(context).size.height/1.12 : null,
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20),

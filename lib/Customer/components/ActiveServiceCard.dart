@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nanoid/nanoid.dart';
 import 'package:sahaayak_app/Customer/components/PhotoHero.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:sahaayak_app/authentication_service.dart';
 import 'package:sahaayak_app/constants.dart';
 import 'package:sahaayak_app/Housekeeper/components/RequestCard.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ActiveServiceCard extends StatelessWidget {
   const ActiveServiceCard(
@@ -71,6 +75,8 @@ class ServiceCard extends StatelessWidget {
     String svExpiry = '${toDt.difference(todayInBuild).inDays+1} Days';
     if ((toDt.difference(todayInBuild).inDays)==0)
       svExpiry = '${toDt.difference(todayInBuild).inHours+24} Hours';
+
+    String transID = customAlphabet('1234567890', 12);
 
     return Card(
         shape: RoundedRectangleBorder(
@@ -193,7 +199,9 @@ class ServiceCard extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(18.0),
                                       side: BorderSide(
                                           color: HexColor("#01274a"))))),
-                      onPressed: () => null),
+                      onPressed: () {
+                        launch('tel:+91 981940379');
+                      }),
                 ),
               ),
             ),
@@ -218,7 +226,116 @@ class ServiceCard extends StatelessWidget {
                                       borderRadius: BorderRadius.zero,
                                       side: BorderSide(
                                           color: Colors.green.shade900)))),
-                      onPressed: () => null),
+                      onPressed: () =>showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Alert'),
+                          content: const Text('Are you sure you want to give attendance for today ?'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: Text(
+                                  'Cancel',
+                                 style: TextStyle(
+                                   color: Colors.red.shade900,
+                                   fontFamily: kFontFamily1,
+                                   fontSize: 15.0,
+                                   fontWeight: FontWeight.bold
+                                 ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                DateTime td = DateTime.now();
+                                NumberFormat mFormat= new NumberFormat("00");
+                                String month = mFormat.format(double.parse(DateTime.now().month.toString()));
+                                String day = mFormat.format(double.parse(DateTime.now().day.toString()));
+                                int today = int.parse('$month'+'$day');
+
+                                if (today  >= activeSMap['fromDateInt'] && today <=  activeSMap['toDateInt'] ) {
+                                  if( activeSMap['attendanceDate'] == null){
+                                    activeSMap['attendance'] += 1;
+                                    print(activeSMap['attendance']);
+                                    sAttendance(activeSMap['serviceId'],activeSMap['attendance'],td);
+                                    Fluttertoast.showToast(
+                                        msg: "Updated Successfully",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 5,
+                                        backgroundColor: Colors.yellow.shade900,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                    Navigator.of(context).pop();
+                                  }else{
+                                  String mMonth = mFormat.format(double.parse(
+                                      (activeSMap['attendanceDate']
+                                              as Timestamp)
+                                          .toDate()
+                                          .month
+                                          .toString()));
+                                  String mDay = mFormat.format(double.parse(
+                                      (activeSMap['attendanceDate']
+                                              as Timestamp)
+                                          .toDate()
+                                          .day
+                                          .toString()));
+                                  int mToday = int.parse('$mMonth' + '$mDay');
+                                  if(mToday < today){
+                                      print('Comparing1 ${td.compareTo((activeSMap['attendanceDate'] as Timestamp).toDate())}');
+                                      activeSMap['attendance'] += 1;
+                                      print(activeSMap['attendance']);
+                                      sAttendance(activeSMap['serviceId'],activeSMap['attendance'],td);
+                                      Fluttertoast.showToast(
+                                          msg: "Updated Successfully",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.TOP,
+                                          timeInSecForIosWeb: 5,
+                                          backgroundColor: Colors.yellow.shade900,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                      Navigator.of(context).pop();
+                                    }
+                                    else{
+                                      print('Comparing2 ${td.compareTo((activeSMap['attendanceDate'] as Timestamp).toDate())}');
+                                      Fluttertoast.showToast(
+                                          msg: "Today's attendance updated",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.TOP,
+                                          timeInSecForIosWeb: 5,
+                                          backgroundColor: Colors.yellow.shade900,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                          Navigator.of(context).pop();
+                                    }
+
+                                  }
+                                }else{
+                                  Fluttertoast.showToast(
+                                      msg: "It is an upcoming service attendance cannot be given",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 5,
+                                      backgroundColor: Colors.yellow.shade900,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                              child: Text(
+                                  'OK',
+                                 style: TextStyle(
+                                     color:Colors.green.shade900,
+                                     fontFamily: kFontFamily1,
+                                     fontSize: 15.0,
+                                     fontWeight: FontWeight.bold
+                                 ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ),
+
                 ),
               ),
             ),
@@ -241,7 +358,95 @@ class ServiceCard extends StatelessWidget {
                                     bottomLeft: Radius.circular(18.0),
                                     bottomRight: Radius.circular(18.0)),
                                 side: BorderSide(color: Colors.red.shade900)))),
-                    onPressed: () => null),
+                    onPressed: () => AlertDialog(
+                      title: const Text('Alert'),
+                      content: const Text('Are you sure you want to cancel the service? \n Note : If service is under current period  money will not be refunded'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(
+                                color: Colors.red.shade900,
+                                fontFamily: kFontFamily1,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            DateTime td = DateTime.now();
+                            NumberFormat mFormat= new NumberFormat("00");
+                            String month = mFormat.format(double.parse(DateTime.now().month.toString()));
+                            String day = mFormat.format(double.parse(DateTime.now().day.toString()));
+                            int today = int.parse('$month'+'$day');
+
+                            String mMonth = mFormat.format(double.parse(
+                                (activeSMap['fromDateInt']
+                                as Timestamp)
+                                    .toDate()
+                                    .month
+                                    .toString()));
+                            String mDay = mFormat.format(double.parse(
+                                (activeSMap['fromDateInt']
+                                as Timestamp)
+                                    .toDate()
+                                    .day
+                                    .toString()));
+                            int mToday = int.parse('$mMonth' + '$mDay');
+
+                            if(today < mToday){
+                              Map<String, dynamic> paymentMap = {
+                                "transID": transID,
+                                "serviceID": activeSMap['serviceId'],
+                                "requestID": activeSMap['requestID'],
+                                "customerName":activeSMap['customerName'],
+                                "housekeeperName":activeSMap['housekeeperName'],
+                                "customerID":activeSMap['customerID'],
+                                "housekeeperID":activeSMap['housekeeperID'],
+                                "amount": activeSMap['price'],
+                                "bookingDate": activeSMap['bookingDate'],
+                                "paid": false,
+                              };
+
+                              payRefund(transID, paymentMap);
+                              deleteService(activeSMap['serviceID']);
+                              Fluttertoast.showToast(
+                                  msg: "Service cancelled.Amount refunded successfully. ",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 5,
+                                  backgroundColor: Colors.yellow.shade900,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                              Navigator.of(context).pop();
+
+                            }else{
+                              deleteService(activeSMap['serviceID']);
+                              Fluttertoast.showToast(
+                                  msg: "Service cancelled.",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 5,
+                                  backgroundColor: Colors.yellow.shade900,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Text(
+                            'OK',
+                            style: TextStyle(
+                                color:Colors.green.shade900,
+                                fontFamily: kFontFamily1,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
               ),
             ),
           ],

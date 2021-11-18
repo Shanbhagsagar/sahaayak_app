@@ -146,3 +146,29 @@ Future<bool> requestAcceptance(Map<String, dynamic> requestMap, String? huid,Str
   //   });
   // }
 }
+
+Future<bool> sAttendance(String serviceId,int attendance, DateTime date) async {
+  CollectionReference att = FirebaseFirestore.instance.collection('Services');
+  print('inside requestAccepted');
+  print('Inside authentication $attendance $date');
+  att.doc(serviceId).update({'attendance': attendance,'attendanceDate':date})
+     .then((value) => print("Attendance Updated"))
+     .catchError((error) => print("Failed to update user: $error"));
+  return true;
+}
+
+Future<bool> deleteService(String serviceId) async {
+  CollectionReference att = FirebaseFirestore.instance.collection('Services');
+  print('inside delete');
+  att.doc(serviceId).delete()
+      .then((value) => print("User Updated"))
+      .catchError((error) => print("Failed to delete user: $error"));
+  return true;
+}
+
+Future<bool> payRefund(String transID,Map<String, dynamic> paymentMap) async {
+  CollectionReference peq = FirebaseFirestore.instance.collection('Payments');
+  print('inside payrefund');
+  peq.doc(transID).set(paymentMap);
+  return true;
+}

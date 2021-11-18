@@ -149,11 +149,9 @@ List<MenuItem> createMenuItems(BuildContext context,String? huid,String? hname) 
     new MenuItem("Dashboard", Icons.dashboard_outlined, () => new Dashboard(huid,hname)),
     //new MenuItem("Book Services", Icons.bookmark_add_outlined, () => new BookServices()),
     new MenuItem("Customers", Icons.receipt_long_outlined,
-        () => new HiredTransactions()),
+        () => new HiredTransactions(huid)),
     new MenuItem(
-        "Payment History", Icons.history_outlined, () => new PaymentHistory()),
-    new MenuItem(
-        "Attendance", Icons.list_alt_outlined, () => new PaymentHistory()),
+        "Payment History", Icons.history_outlined, () => new PaymentHistory(huid)),
     new MenuItem("Update Info", Icons.info_outlined, () => new UpdatePage(huid)),
     new MenuItem("Logout", Icons.logout_outlined, () {
       context.read<AuthenticationService>().signOut();
