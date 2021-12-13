@@ -1,16 +1,43 @@
-# sahaayak_app
+# Sahaayak App
 
-An app for hiring housekeepers
+## Project Made by [@Shanbhagsagar](https://github.com/Shanbhagsagar) & [@TJohn00](https://github.com/TJohn00)
 
-## Getting Started
+### About the project
 
-This project is a starting point for a Flutter application.
+-“Sahayaak App” is a project developed for common person to hire housekeepers as well as for housekeepers 
+to find customers. The language used being Dart, its framework Flutter and Firebase for the backend. 
+-Users can register, login and update their info. Housekeepers need to upload their ID proof for conducting 
+their service.
+-Customers can request a service of any time for up to 30 days at any time, housekeepers will be paid on 
+acceptance in credit.
+-Customers can cancel upcoming services and get refunded the whole amount.
+-Customers can set attendance of the services for security against fraudulent behavior.
+-Users will be able to look at their expired services and transactions for keeping records
 
-A few resources to get you started if this is your first Flutter project:
+### Screenshots
+---
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/1.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/2.png)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/3.png)
+
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/4.png)
+
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/5.png)
+
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/6.png)
+
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/7.png)
+
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/8.png)
+
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/9.png)
+
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/10.png)
+
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/11.png)
+
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/12.png)
+
+![](https://github.com/Shanbhagsagar/sahaayak_app/blob/main/screenshots/13.png)
