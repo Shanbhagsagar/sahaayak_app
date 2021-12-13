@@ -4,15 +4,15 @@
 
 ### About the project
 
--“Sahayaak App” is a project developed for common person to hire housekeepers as well as for housekeepers 
+- “Sahayaak App” is a project developed for common person to hire housekeepers as well as for housekeepers 
 to find customers. The language used being Dart, its framework Flutter and Firebase for the backend. 
--Users can register, login and update their info. Housekeepers need to upload their ID proof for conducting 
+- Users can register, login and update their info. Housekeepers need to upload their ID proof for conducting 
 their service.
--Customers can request a service of any time for up to 30 days at any time, housekeepers will be paid on 
+- Customers can request a service of any time for up to 30 days at any time, housekeepers will be paid on 
 acceptance in credit.
--Customers can cancel upcoming services and get refunded the whole amount.
--Customers can set attendance of the services for security against fraudulent behavior.
--Users will be able to look at their expired services and transactions for keeping records
+- Customers can cancel upcoming services and get refunded the whole amount.
+- Customers can set attendance of the services for security against fraudulent behavior.
+- Users will be able to look at their expired services and transactions for keeping records
 
 ### Screenshots
 ---
